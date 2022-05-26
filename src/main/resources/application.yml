@@ -1,0 +1,41 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/users
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 50000
+          timeout: 30000
+          writetimeout: 50000
+
+twilio:
+  account_sid: AC2b9d19ee98c4d3b6cce1841085a16b65
+  auth_token: 2fb80010363ad121adae9cf166b7add5
+  trial_number: +17659994208
