@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.registration.token;
 
+import com.realestate.RealEstate.appuser.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,10 @@ public class ConfirmationTokenService {
     public int setConfirmedAt(String token) {
         return confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
+    }
+
+    public String getLicenseNumber(AppUser appUser){
+        return confirmationTokenRepository.findByAppUser(appUser).get().getToken();
     }
 
 }

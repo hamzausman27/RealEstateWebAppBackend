@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.registration.token;
 
+import com.realestate.RealEstate.appuser.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
 
     Optional<ConfirmationToken> findByToken(String token);
 
+    Optional<ConfirmationToken> findByAppUser(AppUser appUserID);
     @Transactional
     @Modifying
     @Query("UPDATE ConfirmationToken c " +

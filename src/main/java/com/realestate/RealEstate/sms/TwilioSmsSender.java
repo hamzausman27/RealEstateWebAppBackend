@@ -23,13 +23,6 @@ public class TwilioSmsSender implements SmsSender{
     private final TwilioConfiguration twilioConfiguration;
     private final PasscodeVerificationService passcodeVerificationService;
 
-//
-//    @Autowired
-//    public TwilioSmsSender(TwilioConfiguration twilioConfiguration, PasscodeVerificationService passcodeVerificationService) {
-//        this.twilioConfiguration = twilioConfiguration;
-//        this.passcodeVerificationService = passcodeVerificationService;
-//    }
-
     @Override
     public void sendSms(SmsRequest smsRequest) {
 
@@ -40,8 +33,8 @@ public class TwilioSmsSender implements SmsSender{
         String passcode = RandomStringUtils.randomNumeric(6);
         String message = PASS_CODE_MESSAGE+ passcode;
 
-        MessageCreator creator = Message.creator(to,from,message);
-        creator.create();
+//        MessageCreator creator = Message.creator(to,from,message);
+//        creator.create();
         logger.info("send sms {}" , smsRequest + " " + message);
 
         //save passcode in db?
@@ -55,9 +48,29 @@ public class TwilioSmsSender implements SmsSender{
 
     }
 
+    @Override
+    public boolean verifyPhoneNumber(String passcode, String phoneNumber) {
+      if(passcodeVerificationService.getPassCode(phoneNumber).isPresent()){
+          String temp = passcodeVerificationService.getPassCode(phoneNumber).get().getPassCode();
+
+          if(temp.equals(passcode)){
+
+              //remove entry from passcode table
+              passcodeVerificationService.deleteEntry(passcodeVerificationService.getPassCode(phoneNumber).get().getId());
+          return true;
+          }
+
+          return  temp.equals(passcode);
+        }
+      return  false;
+    }
+
     private boolean isPhoneValid(String phoneNumber) {
 //    TODO : VALIDATE PHONE NUMBER
 
         return true;
     }
+
+
+
 }

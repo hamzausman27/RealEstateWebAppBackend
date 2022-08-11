@@ -1,5 +1,7 @@
 package com.realestate.RealEstate.appuser;
 
+import com.realestate.RealEstate.search.SearchOption;
+import com.realestate.RealEstate.utils.CurrentLocation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,26 +32,83 @@ public class AppUser implements UserDetails {
             generator = "student_sequence"
     )
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
+
+    private String fullName;
     private String email;
+    private String phoneNumber;
+
+    private String companyName;
+    private String country;
+
+    private String state;
+    private String city;
+
+    private String area;
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
-    private Boolean locked = false;
-    private Boolean enabled = false;
 
-    public AppUser(String firstName,String lastName, String phoneNumber, String email, String password, AppUserRole appUserRole) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    @Column(columnDefinition = "TINYINT")
+    private Boolean locked = false;
+    @Column(columnDefinition = "TINYINT")
+    private Boolean verified = false;
+
+    private String userLongitude;
+
+    private String userLatitude;
+
+    @Enumerated(EnumType.STRING)
+    private SearchOption searchOption;
+
+
+
+
+    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole) {
+        this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
     }
 
+
+    public AppUser(String fullName, String email, String phoneNumber, String companyName, String country, String state, String city, String area, String password, AppUserRole appUserRole) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.companyName = companyName;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.area = area;
+        this.password = password;
+        this.appUserRole = appUserRole;
+    }
+
+    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole, String longitude, String latitude) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.appUserRole = appUserRole;
+        this.userLongitude = longitude;
+        this.userLatitude = latitude;
+    }
+
+    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole,String longitude,String latitude,SearchOption searchOption, String city,String country) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.appUserRole = appUserRole;
+        this.userLongitude = longitude;
+        this.userLatitude = latitude;
+        this.searchOption = searchOption;
+        this.city = city;
+        this.country = country;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
@@ -83,6 +142,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return verified;
     }
 }
