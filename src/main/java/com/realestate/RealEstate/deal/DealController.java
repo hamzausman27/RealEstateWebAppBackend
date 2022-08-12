@@ -4,6 +4,10 @@ import com.realestate.RealEstate.contact.ContactRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/v1")
 @AllArgsConstructor
@@ -19,11 +23,10 @@ public class DealController {
     }
 
     @PostMapping("/removeDeal")
-    public String removeDeal(@RequestBody DealRequest2 dealRequest){
-        if(dealService.removeDeal(dealRequest.getDealId())){
-            return "Deal is deleted successfully";
-        }
-        return "Deal is not deleted!!";
+    public Boolean removeDeal(@RequestBody DealRequest2 dealRequest){
+
+        return dealService.removeDeal(dealRequest.getDealId());
+
     }
 
     @PostMapping("/updateDealStatus")
@@ -34,4 +37,9 @@ public class DealController {
         return "Deal status has not been updated!!";
     }
 
+    @PostMapping("/getAllDeals")
+    public List<Deal> getUserDeals(@RequestBody DealRequest3 dealRequest3){
+                return dealService.getUserDeals(dealRequest3.getAgentId());
+
+    }
 }

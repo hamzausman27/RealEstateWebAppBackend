@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +31,7 @@ public class DealService {
         if(null != dealRequest && appUser.isPresent()){
 
             LocalDateTime createdAt = LocalDateTime.now();
-            dealRepository.save( new Deal(
+            Deal newDeal = new Deal(
                     appUser.get(),
                     createdAt,
                     dealRequest.getClientName(),
@@ -39,7 +41,9 @@ public class DealService {
                     dealRequest.getLocation(),
                     dealRequest.getTag(),
                     dealRequest.getDescription()
-            ));
+            );
+
+            dealRepository.save(newDeal);
             logger.info("Deal has been added in db!!");
 
             contactService.saveContact(new ContactRequest(
@@ -49,13 +53,12 @@ public class DealService {
                     dealRequest.getTag()
             ));
 
-            return new DealResponse(true,createdAt);
+            return new DealResponse(true,createdAt, newDeal.getId());
 
         }
         logger.error("Deal request is:" + dealRequest.getAgentID() + "  ,"+ dealRequest.getClientName() + "  ,"+ dealRequest.getClientPhoneNumber() + "  ,"+ dealRequest.getArea() + "  ,"+ dealRequest.getAmount() + "  ,"+ dealRequest.getLocation() + "  ,"+ dealRequest.getTag() + "  ," + dealRequest.getDescription() + "  ,");
-
         logger.error("Unable to add new deal!!!");
-        return new DealResponse(false,null);
+        return new DealResponse(false,null,0L);
     }
 
     boolean removeDeal(Long dealId){
@@ -90,4 +93,13 @@ public class DealService {
     }
 
 
+    public List<Deal> getUserDeals(String agentId) {
+        Optional<AppUser> appUser = appUserRepository.findById(Long.valueOf(agentId));
+        if(appUser.isPresent()){
+        AppUser appUser1 = appUser.get();
+        return dealRepository.findAllByAppUser(appUser1);
+        }
+        logger.warn("No user deals are found against user id:"+ agentId);
+        return null;
+    }
 }

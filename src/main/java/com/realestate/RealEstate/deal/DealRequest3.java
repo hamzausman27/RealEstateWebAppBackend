@@ -5,14 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class DealResponse {
-    private final boolean dealAdded;
-    private final LocalDateTime createdAt;
-    private final Long dealId;
+public class DealRequest3 {
+
+    private final String agentId;
+
 }

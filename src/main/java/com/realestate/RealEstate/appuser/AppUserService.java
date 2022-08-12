@@ -69,6 +69,7 @@ public class AppUserService implements UserDetailsService {
         return true;
     }
     public boolean loginUser(String phoneNumber, String rawPassword){
+        logger.info("Trying to log in with -> phoneNumber : " + phoneNumber + "  , password : " + rawPassword);
         AppUser appUser = appUserRepository.findByPhoneNumber(phoneNumber).get();
         if(appUser != null){
             String encodedPassowrd = appUser.getPassword();
