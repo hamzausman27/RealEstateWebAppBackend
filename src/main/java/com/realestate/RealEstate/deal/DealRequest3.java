@@ -12,5 +12,6 @@ import lombok.ToString;
 public class DealRequest3 {
 
     private final String agentId;
+    private final String agentPhone;
 
 }

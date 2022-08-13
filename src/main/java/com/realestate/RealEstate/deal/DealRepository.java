@@ -29,4 +29,17 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
             "WHERE d.id = ?1")
     int updateDealStatus(Long id,DealStatus dealStatus);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Deal d " +
+            "SET d.clientName = ?2 ,d.clientPhone =?3, d.area =?4, d.amount = ?5,d.clientLocation = ?6,d.description = ?7,d.tag =?8 " +
+            "WHERE d.id = ?1")
+    int editDeal(Long id,String clientName,String clientPhone,String area,double amount,String location, String description,String tag);
+
+
+        // private final String area;
+    //    private final String tag;
+    //    private final double amount;
+    //    private final String location;
+    //    private final String description;
 }

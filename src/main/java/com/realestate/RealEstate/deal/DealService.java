@@ -71,6 +71,17 @@ public class DealService {
         return false;
     }
 
+    boolean updateDeal(DealRequest4 dealRequest4){
+
+        if(dealRepository.findById(dealRequest4.getDealId()).isPresent()){
+            dealRepository.editDeal(dealRequest4.getDealId(),dealRequest4.getClientName(),dealRequest4.getClientPhoneNumber(),dealRequest4.getArea(),dealRequest4.getAmount(),dealRequest4.getLocation(),dealRequest4.getDescription(),dealRequest4.getTag());
+            logger.info("Deal has been edited!!!");
+            return true;
+        }
+        logger.warn("Unable to edit deal!!!");
+        return false;
+    }
+
     boolean changeDealStatus(Long dealId,String dealStatus){
 
         if(dealId != null && dealStatus != null){
@@ -92,12 +103,35 @@ public class DealService {
         return false;
     }
 
+    private String getDealStatus(DealStatus dealStatus){
+        if(dealStatus == DealStatus.NEW) return "NEW";
+        if(dealStatus == DealStatus.INPROGRESS) return "INPROGRESS";
+        if(dealStatus == DealStatus.DONE) return "DONE";
 
-    public List<Deal> getUserDeals(String agentId) {
+        return "LOST";
+
+    }
+
+    public List<DealCard> getUserDeals(String agentId) {
         Optional<AppUser> appUser = appUserRepository.findById(Long.valueOf(agentId));
         if(appUser.isPresent()){
         AppUser appUser1 = appUser.get();
-        return dealRepository.findAllByAppUser(appUser1);
+        List<Deal> userDeals = dealRepository.findAllByAppUser(appUser1);
+        List<DealCard> dealCards = new ArrayList<>();
+        for(Deal deal : userDeals)
+            dealCards.add(new DealCard(
+                    deal.getId().toString(),
+                    deal.getClientName(),
+                    deal.getClientPhone(),
+                    String.valueOf(deal.getAmount()),
+                    deal.getArea(),
+                    deal.getClientLocation(),
+                    deal.getTag(),
+                    deal.getDescription(),
+                    deal.getCreatedAt().toString(),
+                    getDealStatus(deal.getDealStatus())
+            ));
+        return dealCards;
         }
         logger.warn("No user deals are found against user id:"+ agentId);
         return null;

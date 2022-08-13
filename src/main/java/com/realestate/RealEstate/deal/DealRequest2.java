@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 public class DealRequest2 {
     Long dealId;
+    String agentId;
     String dealStatus;
 
     public DealRequest2(Long dealId) {

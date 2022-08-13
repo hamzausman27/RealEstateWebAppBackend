@@ -17,16 +17,23 @@ public class DealController {
     private final DealService dealService;
 
     @PostMapping("/addDeal")
-    public DealResponse addDeal(@RequestBody DealRequest dealRequest){
+    public List<DealCard> addDeal(@RequestBody DealRequest dealRequest){
 
-        return dealService.addDeal(dealRequest);
+                dealService.addDeal(dealRequest);
+            return dealService.getUserDeals(dealRequest.getAgentID());
     }
 
     @PostMapping("/removeDeal")
-    public Boolean removeDeal(@RequestBody DealRequest2 dealRequest){
+    public List<DealCard> removeDeal(@RequestBody DealRequest2 dealRequest){
 
-        return dealService.removeDeal(dealRequest.getDealId());
+       dealService.removeDeal(dealRequest.getDealId());
 
+       return dealService.getUserDeals(dealRequest.getAgentId());
+    }
+    @PostMapping("/editDeal")
+    public boolean editDeal(@RequestBody DealRequest4 dealRequest) {
+
+        return dealService.updateDeal(dealRequest);
     }
 
     @PostMapping("/updateDealStatus")
@@ -38,7 +45,7 @@ public class DealController {
     }
 
     @PostMapping("/getAllDeals")
-    public List<Deal> getUserDeals(@RequestBody DealRequest3 dealRequest3){
+    public List<DealCard> getUserDeals(@RequestBody DealRequest3 dealRequest3){
                 return dealService.getUserDeals(dealRequest3.getAgentId());
 
     }
