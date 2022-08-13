@@ -37,11 +37,9 @@ public class DealController {
     }
 
     @PostMapping("/updateDealStatus")
-    public String updateDealStatus(@RequestBody DealRequest2 dealRequest){
-        if(dealService.changeDealStatus(dealRequest.getDealId(),dealRequest.getDealStatus())){
-            return "Deal status has been updated successfully";
-        }
-        return "Deal status has not been updated!!";
+    public boolean updateDealStatus(@RequestBody DealRequest2 dealRequest){
+        return dealService.changeDealStatus(dealRequest.getDealId(),dealRequest.getDealStatus());
+
     }
 
     @PostMapping("/getAllDeals")

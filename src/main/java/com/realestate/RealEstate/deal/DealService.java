@@ -72,8 +72,9 @@ public class DealService {
     }
 
     boolean updateDeal(DealRequest4 dealRequest4){
-
+        logger.info("Update deal request is :");
         if(dealRepository.findById(dealRequest4.getDealId()).isPresent()){
+
             dealRepository.editDeal(dealRequest4.getDealId(),dealRequest4.getClientName(),dealRequest4.getClientPhoneNumber(),dealRequest4.getArea(),dealRequest4.getAmount(),dealRequest4.getLocation(),dealRequest4.getDescription(),dealRequest4.getTag());
             logger.info("Deal has been edited!!!");
             return true;
@@ -86,7 +87,8 @@ public class DealService {
 
         if(dealId != null && dealStatus != null){
             if(dealRepository.findById(dealId).isPresent()){
-                if(dealStatus.equals(DealStatus.DONE.toString()) ||dealStatus.equals(DealStatus.NEW.toString()) || dealStatus.equals(DealStatus.INPROGRESS.toString()) || dealStatus.equals(DealStatus.LOST.toString()) ){
+
+                if(dealStatus.equals("DONE") ||dealStatus.equals("NEW") || dealStatus.equals("INPROGRESS") || dealStatus.equals("LOST") ){
                     DealStatus dealStatus1 = DealStatus.valueOf(dealStatus);
                     logger.info("Deal Status: deal status = " + dealStatus1);
                     dealRepository.updateDealStatus(dealId,dealStatus1);
