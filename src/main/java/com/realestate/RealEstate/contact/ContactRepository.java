@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.contact;
 
+import com.realestate.RealEstate.appuser.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     Optional<List<Contact>> findByName(String name);
+
+    List<Contact> findAllByAppUser(AppUser appUser);
     Optional<Contact> findByPhoneNumber(String phoneNumber);
     Optional<List<Contact>> findByTag(String tag);
     Optional <Contact> findByAddress(String address);

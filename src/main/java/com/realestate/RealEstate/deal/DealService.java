@@ -46,7 +46,9 @@ public class DealService {
             dealRepository.save(newDeal);
             logger.info("Deal has been added in db!!");
 
+
             contactService.saveContact(new ContactRequest(
+                    dealRequest.getAgentID(),
                     dealRequest.getClientName(),
                     dealRequest.getClientPhoneNumber(),
                     dealRequest.getLocation(),

@@ -8,6 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class ContactController {
 
     private final ContactService contactService;
@@ -36,8 +37,8 @@ public class ContactController {
         return "Contact is not updated!!";
     }
 
-    @GetMapping("/getAllContacts")
-    public List<Contact> findAllContacts(){
-        return contactService.getAllContacts();
+    @PostMapping("/getAllUserContacts")
+    public List<ContactCard> findAllContacts(@RequestBody ContactRequest contactRequest){
+        return contactService.getAllUserContacts(contactRequest.getAgentId());
     }
 }

@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.contact;
 
+import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.tag.Tag;
 import lombok.*;
 
@@ -25,6 +26,13 @@ public class Contact {
             generator = "student_sequence"
     )
     private Long contactId;
+
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "app_user_id"
+    )
+    private AppUser appUser;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -37,7 +45,8 @@ public class Contact {
     private String tag;
 
 
-    public Contact(String name, String phoneNumber, String address, String tag) {
+    public Contact(AppUser appUser,String name, String phoneNumber, String address, String tag) {
+        this.appUser = appUser;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;

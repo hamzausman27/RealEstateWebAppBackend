@@ -9,12 +9,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class ContactRequest {
-
-    private final String agentId;
-    private final String name;
+public class ContactCard {
+    private final String id;
+    private final String customerName;
     private final String phoneNumber;
-    private final String address;
-    private final String tag;
-
+    private final String location;
+    private final String tags;
 }

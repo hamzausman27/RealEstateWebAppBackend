@@ -32,7 +32,6 @@ public class DealController {
     }
     @PostMapping("/editDeal")
     public boolean editDeal(@RequestBody DealRequest4 dealRequest) {
-
         return dealService.updateDeal(dealRequest);
     }
 
