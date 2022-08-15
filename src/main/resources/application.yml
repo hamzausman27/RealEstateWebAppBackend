@@ -13,7 +13,7 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
         format_sql: true
     show-sql: true
 

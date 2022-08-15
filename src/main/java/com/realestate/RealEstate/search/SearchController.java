@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
     private final AppUserService appUserService;
 
+    private final UserLocationService userLocationService;
 
     @PostMapping("/updateUserLocation")
     public String updateUserLocation(@RequestBody LocationUpdateRequest locationUpdateRequest){
@@ -21,5 +22,17 @@ public class SearchController {
         }
         return "User location is not updated!!";
     }
+
+//    @PostMapping("/addUserPoint")
+//    public boolean addUserPoint(@RequestBody LocationUpdateRequest locationUpdateRequest){
+//        return userLocationService.addUserLocation(locationUpdateRequest.getAgentId(),locationUpdateRequest.getLatitude(),locationUpdateRequest.getLongitude());
+//    }
+
+    @PostMapping("/testAddUser")
+    public boolean testAddUserPoint(){
+        return userLocationService.testAddUserLocation();
+    }
+
+
     
 }
