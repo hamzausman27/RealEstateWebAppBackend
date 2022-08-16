@@ -25,14 +25,19 @@ public class UserLocation {
     )
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "app_user_id"
+    )
+    private AppUser appUser;
 
-    private String longitude;
+    private double longitude;
 
-    private String latitude;
+    private double latitude;
 
-    public UserLocation(Long userId, String longitude, String latitude) {
-        this.userId = userId;
+    public UserLocation(AppUser appUser, double longitude, double latitude) {
+        this.appUser = appUser;
         this.longitude = longitude;
         this.latitude = latitude;
     }

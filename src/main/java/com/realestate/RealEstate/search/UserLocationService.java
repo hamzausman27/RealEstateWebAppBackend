@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -45,11 +46,18 @@ public class UserLocationService {
 //
 //        return true;
 //    }
-private double calculateDistance(
-        double lon1, double lat1, double lon2, double lat2) {
+private double calculateDistance(double lon1, double lat1, double lon2, double lat2) {
     GeodesicData g = Geodesic.WGS84.Inverse(lat1, lon1, lat2, lon2);
-    return g.s12;  // distance in metres
+    return g.s12/1000;  // distance in kilometers
 }
+
+private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUser,double range){
+
+    return calculateDistance(userLocation.getLongitude(),userLocation.getLatitude(),
+            otherUser.getLongitude(),otherUser.getLatitude()) <= range;
+
+}
+
     boolean testAddUserLocation(){
 
        // appUserRepository.save(appUser);
@@ -67,27 +75,50 @@ private double calculateDistance(
         return true;
     }
 
-    public boolean updateUserLocation(String agentId, String longitude, String latitude) {
+    public boolean updateUserLocation(String agentId, double longitude, double latitude) {
+       Optional<AppUser> appUserOptional = appUserRepository.findById(Long.valueOf(agentId));
+    if(appUserOptional.isPresent()){
+        Optional<UserLocation> userLocationOptional = userLocationRepository.findByAppUser(appUserOptional.get());
+        if(userLocationOptional.isPresent()){
+            logger.info("Updating location of existing user -> userID:" +agentId);
+            userLocationRepository.updateExistingUserLocation(userLocationOptional.get().getId(),latitude,longitude);
 
-    if(appUserRepository.findById(Long.valueOf(agentId)).isPresent()){
-        userLocationRepository.save(new UserLocation(Long.valueOf(agentId),longitude,latitude));
+        }else{
+            logger.info("User location doesnot exist therefore inserting location! -> userId" + agentId);
+            userLocationRepository.save(new UserLocation(appUserOptional.get(),longitude,latitude));
+        }
+
+
       logger.info("User location has been updated -> userID:" +agentId);
         return true;
     }
-        logger.info("Unable to fin user with userID:" +agentId);
+        logger.info("Unable to find user with userID:" +agentId);
     return false;
 
     }
 
-    public List<Double> getUserInRange(String agentId, String range){
-    List<Double> usersInRange =  new ArrayList<>();
-        if(appUserRepository.findById(Long.valueOf(agentId)).isPresent()){
-            userLocationRepository.findByUs
-
-
+    public List<Long> getUserInRange(long agentId, double range){
+    List<Long> usersInRange =  new ArrayList<>();
+    Optional<AppUser> appUserOptional = appUserRepository.findById(agentId);
+    if(appUserOptional.isPresent()){
+        Optional<UserLocation> userLocationOptional =  userLocationRepository.findByAppUser(appUserOptional.get());
+        if(userLocationOptional.isPresent() && userLocationOptional.get().getLongitude()!=0 && userLocationOptional.get().getLatitude()!=0){
+            logger.info("User location is present -> Getting user in range!!");
+            UserLocation userLocation = userLocationOptional.get();
+            List<UserLocation> userLocationList = userLocationRepository.findAll();
+            for(UserLocation userLocation1:userLocationList){
+                if(userLocation1.getAppUser().getId()!=agentId){
+                    if(checkUserInRange(userLocation,userLocation1,range)){
+                        usersInRange.add(userLocation1.getAppUser().getId());
+                    }
+                }
+            }
+            logger.info("Total user in range for user:"+agentId +" and distance range:"+range+" are:" +usersInRange.size());
+        }
+        logger.warn("User location is not valid!! -> ");
         }
 
-
+    return usersInRange;
 
     }
 

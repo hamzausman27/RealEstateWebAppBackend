@@ -12,7 +12,7 @@ import lombok.ToString;
 public class LocationUpdateRequest {
 
     private final String agentId;
-    private final String longitude;
-    private final String latitude;
+    private final double longitude;
+    private final double latitude;
 
 }
