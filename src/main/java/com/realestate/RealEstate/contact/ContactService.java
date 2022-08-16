@@ -49,39 +49,20 @@ public class ContactService {
         return false;
     }
 
-    public boolean updateContact(ContactRequest contactRequest){
 
-        if(deleteContact(contactRequest)){
-            if(saveContact(contactRequest)){
-                logger.info("Contact has been updated in the database! -> " + contactRequest.toString());
-                return true;
-            }else{
+    public boolean deleteContact(ContactRequest2 contactRequest){
 
-                logger.error("Unable to insert updated contact!! -> " + contactRequest.toString());
-                return false;
-            }
+        Optional<Contact> userContactOptional = contactRepository.findById(contactRequest.getContactId());
+        if(userContactOptional.isPresent()){
+            Contact contact = userContactOptional.get();
+            logger.info("Going to delete contact -> contact:"+contact.toString());
+            contactRepository.delete(contact);
+            logger.info("Contact deleted!");
+            return true;
         }
-        logger.error("Unable to update contact!! -> " + contactRequest.toString());
-
+        logger.warn("Unable to delete contact as it doest not exits in db -> contact_id:"+contactRequest.getContactId());
         return false;
-    }
 
-    public boolean deleteContact(ContactRequest contactRequest){
-        if(null != contactRequest) {
-            if (contactRepository.findByPhoneNumber(contactRequest.getPhoneNumber()).isEmpty()) {
-                logger.error("Unable to save new contact as the provided phone number already exists in the database!! -> " + contactRequest.getPhoneNumber());
-
-                return false;
-            } else {
-
-                contactRepository.delete(
-                        contactRepository.findByPhoneNumber(contactRequest.getPhoneNumber()).get());
-                logger.info("Contact has been deleted from the database! -> " + contactRequest.toString());
-                return true;
-            }
-        }
-        logger.error("Unable to delete requested contact as the provided request is empty!! -> " + contactRequest.toString());
-        return false;
     }
 
     public List<ContactCard> getAllUserContacts(String agentId){
