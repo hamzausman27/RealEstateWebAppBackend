@@ -17,7 +17,7 @@ public class SearchController {
 
     @PostMapping("/updateUserLocation")
     public String updateUserLocation(@RequestBody LocationUpdateRequest locationUpdateRequest){
-        if(appUserService.updateUserLocation(locationUpdateRequest.getPhoneNumber(),locationUpdateRequest.getLongitude(),locationUpdateRequest.getLatitude())){
+        if(userLocationService.updateUserLocation(locationUpdateRequest.getAgentId(),locationUpdateRequest.getLongitude(),locationUpdateRequest.getLatitude())){
             return "User location is updated successfully";
         }
         return "User location is not updated!!";

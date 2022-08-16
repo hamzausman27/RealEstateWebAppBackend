@@ -25,51 +25,15 @@ public class UserLocation {
     )
     private Long id;
 
-    private String agentId;
-//    @ManyToOne
-//    @JoinColumn(
-//            nullable = false,
-//            name = "app_user_id"
-//    )
-//    private AppUser appUser;
+    private Long userId;
 
-    @NotNull
-    @Column(columnDefinition = "POINT")
-    private Point coordinate;
-//
-//    @Column(columnDefinition = "TEXT")
-//    private String latitude;
-//
-//    @Column(columnDefinition = "TEXT")
-//    private String longitude;
+    private String longitude;
 
-//
-//    public UserLocation(AppUser appUser, Point coordinate) {
-////        this.appUser = appUser;
-//        this.coordinate = coordinate;
-//    }
+    private String latitude;
 
-
-//    public UserLocation(Point coordinate) {
-//        this.coordinate = coordinate;
-//    }
-//
-//    public UserLocation(String agentId, Point coordinate) {
-//        this.agentId = agentId;
-//        this.coordinate = coordinate;
-//    }
-
-    public UserLocation(Long id, String agentId, Point coordinate) {
-        this.id = id;
-        this.agentId = agentId;
-        this.coordinate = coordinate;
+    public UserLocation(Long userId, String longitude, String latitude) {
+        this.userId = userId;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
-
-//
-//    public UserLocation(Long id, String agentId, String latitude, String longitude) {
-//        this.id = id;
-//        this.agentId = agentId;
-//        this.latitude = latitude;
-//        this.longitude = longitude;
-//    }
 }
