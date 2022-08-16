@@ -103,15 +103,6 @@ public class AppUserService implements UserDetailsService {
         return new SmsRequest(phoneNumber);
     }
 
-    public boolean updateUserLocation(String phoneNumber,String longitude,String latitude){
-        if(appUserRepository.updateUserLocation(phoneNumber,longitude,latitude)){
-            logger.info("User location has been updated ! Longitude:" + longitude + " and Latitude:" + latitude);
-        return true;
-        }
-
-        logger.warn("User location has not been updated !!!");
-    return false;
-    }
 
     public boolean resendPasscode(String phoneNumber){
 

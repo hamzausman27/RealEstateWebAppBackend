@@ -14,28 +14,22 @@ public class ContactController {
     private final ContactService contactService;
 
     @PostMapping("/addContact")
-    public String addContact(@RequestBody ContactRequest contactRequest){
-        if(contactService.saveContact(contactRequest)){
-            return "Contact is added successfully";
-        }
-        return "Contact is not added!!";
+    public boolean addContact(@RequestBody ContactRequest contactRequest){
+       return contactService.saveContact(contactRequest);
     }
 
     @PostMapping("/removeContact")
-    public String removeContact(@RequestBody ContactRequest contactRequest){
-        if(contactService.deleteContact(contactRequest)){
-            return "Contact is removed successfully";
-        }
-        return "Contact is not removed!!";
+    public boolean removeContact(@RequestBody ContactRequest2 contactRequest){
+        return contactService.deleteContact(contactRequest);
     }
 
-    @PostMapping("/updateContact")
-    public String updateContact(@RequestBody ContactRequest contactRequest){
-        if(contactService.updateContact(contactRequest)){
-            return "Contact is updated successfully";
-        }
-        return "Contact is not updated!!";
-    }
+//    @PostMapping("/updateContact")
+//    public String updateContact(@RequestBody ContactRequest contactRequest){
+//        if(contactService.updateContact(contactRequest)){
+//            return "Contact is updated successfully";
+//        }
+//        return "Contact is not updated!!";
+//    }
 
     @PostMapping("/getAllUserContacts")
     public List<ContactCard> findAllContacts(@RequestBody ContactRequest contactRequest){

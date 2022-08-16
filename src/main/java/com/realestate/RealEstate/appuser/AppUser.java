@@ -65,13 +65,13 @@ public class AppUser implements UserDetails {
 
 
 
-    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole) {
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.password = password;
-        this.appUserRole = appUserRole;
-    }
+//    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole) {
+//        this.fullName = fullName;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//        this.password = password;
+//        this.appUserRole = appUserRole;
+//    }
 
 
     public AppUser(String fullName, String email, String phoneNumber, String companyName, String country, String state, String city, String area, String password, AppUserRole appUserRole) {
@@ -87,28 +87,28 @@ public class AppUser implements UserDetails {
         this.appUserRole = appUserRole;
     }
 
-    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole, String longitude, String latitude) {
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.password = password;
-        this.appUserRole = appUserRole;
-        this.userLongitude = longitude;
-        this.userLatitude = latitude;
-    }
+//    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole, String longitude, String latitude) {
+//        this.fullName = fullName;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//        this.password = password;
+//        this.appUserRole = appUserRole;
+//        this.userLongitude = longitude;
+//        this.userLatitude = latitude;
+//    }
 
-    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole,String longitude,String latitude,SearchOption searchOption, String city,String country) {
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.password = password;
-        this.appUserRole = appUserRole;
-        this.userLongitude = longitude;
-        this.userLatitude = latitude;
-        this.searchOption = searchOption;
-        this.city = city;
-        this.country = country;
-    }
+//    public AppUser(String fullName, String phoneNumber, String email, String password, AppUserRole appUserRole,String longitude,String latitude,SearchOption searchOption, String city,String country) {
+//        this.fullName = fullName;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//        this.password = password;
+//        this.appUserRole = appUserRole;
+//        this.userLongitude = longitude;
+//        this.userLatitude = latitude;
+//        this.searchOption = searchOption;
+//        this.city = city;
+//        this.country = country;
+//    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
