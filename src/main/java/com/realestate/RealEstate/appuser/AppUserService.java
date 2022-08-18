@@ -2,9 +2,9 @@ package com.realestate.RealEstate.appuser;
 
 import com.realestate.RealEstate.registration.token.ConfirmationToken;
 import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import com.realestate.RealEstate.sms.SmsRequest;
 import com.realestate.RealEstate.sms.SmsService;
-import com.realestate.RealEstate.sms.TwilioInitializer;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,6 +28,8 @@ public class AppUserService implements UserDetailsService {
     private final ConfirmationTokenService confirmationTokenService;
 
     private final PasscodeVerificationService passcodeVerificationService;
+
+    private final UserSearchOptionService userSearchOptionService;
     private final static Logger logger = LoggerFactory.getLogger(AppUserService.class);
     private final SmsService smsService;
 
@@ -52,6 +53,8 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(encodedPassword);
 
         appUserRepository.save(appUser);
+        //saving  default search option : 3(country) and 50 km as default maxRange
+        userSearchOptionService.addUserSearchOption(appUser,3,50, appUser.getCity(), appUser.getCountry());
 
         String token  = UUID.randomUUID().toString();
 

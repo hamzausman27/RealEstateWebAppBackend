@@ -26,20 +26,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +
-            "SET a.userLongitude = ?2,a.userLatitude = ?3 WHERE a.phoneNumber = ?1")
-    boolean updateUserLocation(String phoneNumber, String longitude,String latitude);
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE AppUser a " +
             "SET a.password = ?2 WHERE a.phoneNumber = ?1")
     Integer updateUserPassword(String phoneNumber,String encodedPassword);
 
-
-
-//    @Transactional
-//    @Modifying
-//    @Query("SELECT AppUser a " +
-//            "SET a.userLongitude = ?2,a.userLatitude = ?3 WHERE a.phoneNumber = ?1")
-//    boolean updateUserLocation(String phoneNumber, String longitude,String latitude);
 }

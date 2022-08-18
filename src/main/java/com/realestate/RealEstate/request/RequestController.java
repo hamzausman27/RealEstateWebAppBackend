@@ -20,19 +20,19 @@ public class RequestController {
     //        return "Deal is not added!!";
     //    }
 
-    @PostMapping("/addRequest")
-    public String addRequest(@RequestBody InputRequest inputRequest){
-        if(requestService.addRequest(inputRequest)){
-            return "Request is added successfully!";
-        }
-        return "Request is not added!!";
-    }
-    @PostMapping("/deleteRequest")
-    public String deleteRequest(@RequestBody InputRequest inputRequest){
-        if(requestService.deleteRequest(inputRequest)){
-            return "Request is added successfully!";
-        }
-        return "Request is not added!!";
-    }
+//    @PostMapping("/addRequest")
+//    public String addRequest(@RequestBody InputRequest inputRequest){
+//        if(requestService.createRequest(inputRequest)){
+//            return "Request is added successfully!";
+//        }
+//        return "Request is not added!!";
+//    }
+//    @PostMapping("/deleteRequest")
+//    public String deleteRequest(@RequestBody InputRequest inputRequest){
+//        if(requestService.deleteRequest(inputRequest)){
+//            return "Request is added successfully!";
+//        }
+//        return "Request is not added!!";
+//    }
 
 }

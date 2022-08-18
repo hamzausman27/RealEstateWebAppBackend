@@ -1,24 +1,13 @@
 package com.realestate.RealEstate.registration;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.realestate.RealEstate.UserInfo.UserInfo;
+import com.realestate.RealEstate.userinfo.UserInfo;
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserService;
-import com.realestate.RealEstate.registration.token.ConfirmationToken;
 import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
-import com.realestate.RealEstate.security.filter.CustomAuthenticationFilter;
-import com.realestate.RealEstate.sms.SmsRequest;
-import com.realestate.RealEstate.sms.SmsService;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
-import com.realestate.RealEstate.tag.TagRequest;
-import com.realestate.RealEstate.tag.TagService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

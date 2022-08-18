@@ -1,4 +1,4 @@
-package com.realestate.RealEstate.search;
+package com.realestate.RealEstate.utils;
 
 public enum SearchOption {
     SEARCH_BY_DISTANCE,

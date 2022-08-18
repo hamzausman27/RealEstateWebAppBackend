@@ -10,8 +10,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class InputRequest {
-    private final Long requestId;
-    private final String agentName;
+   // private final Long requestId;
+    private final String title;
     private final String agentPhoneNumber;
     private final String location;
     private final String propertySize;

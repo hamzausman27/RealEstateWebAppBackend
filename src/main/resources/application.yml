@@ -13,8 +13,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-#    properties:
-#      hibernate.dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+    properties:
+      dialect: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
 
   mail:

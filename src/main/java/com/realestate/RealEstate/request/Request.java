@@ -18,49 +18,34 @@ import java.time.LocalDateTime;
 public class Request {
     @Id
     @SequenceGenerator(
-            name = "confirmation_token_sequence",
-            sequenceName = "confirmation_token_sequence",
+            name = "student_sequence",
+            sequenceName = "sequence_name",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "confirmation_token_sequence"
+            generator = "student_sequence"
     )
     private Long id;
 
-    @OneToOne
-    @JoinColumn(
-            nullable = false,
-            name = "deal_id"
-    )
-    private Deal deal;
-    @Column(nullable = false)
-    private String agentName;
+    private String title;
 
-    @Column(nullable = false)
-    private String agentPhoneNumber;
-    @Column(nullable = false)
+    private String area;
+
+    private String tags;
+
+    private double amount;
+
     private String location;
 
-    @Column(nullable = false)
-    private String propertySize;
+    private String description;
 
-    @Column(nullable = false)
-    private Double propertyAmount;
-
-    @Column(nullable = false)
-    private String tagsAdded;
-
-    @Column(nullable = false)
-    private LocalDateTime requestCreatedAt;
-
-    public Request(String agentName, String agentPhoneNumber, String location, String propertySize, Double propertyAmount, String tagsAdded) {
-        this.agentName = agentName;
-        this.agentPhoneNumber = agentPhoneNumber;
+    public Request(String title, String area, String tags, double amount, String location, String description) {
+        this.title = title;
+        this.area = area;
+        this.tags = tags;
+        this.amount = amount;
         this.location = location;
-        this.propertySize = propertySize;
-        this.propertyAmount = propertyAmount;
-        this.tagsAdded = tagsAdded;
-        this.requestCreatedAt = LocalDateTime.now();
+        this.description = description;
     }
 }

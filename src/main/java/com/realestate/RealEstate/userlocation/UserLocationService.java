@@ -1,17 +1,10 @@
-package com.realestate.RealEstate.search;
+package com.realestate.RealEstate.userlocation;
 
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserRepository;
-import com.realestate.RealEstate.appuser.AppUserRole;
-import com.realestate.RealEstate.deal.DealService;
 import lombok.AllArgsConstructor;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
-import org.geolatte.geom.crs.CoordinateReferenceSystem;
-import org.geolatte.geom.jts.JTS;
-import org.locationtech.jts.algorithm.Length;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,7 +51,7 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
 
 }
 
-    boolean testAddUserLocation(){
+    public boolean testAddUserLocation(){
 
        // appUserRepository.save(appUser);
         Double  latitude =  31.50799445216071;

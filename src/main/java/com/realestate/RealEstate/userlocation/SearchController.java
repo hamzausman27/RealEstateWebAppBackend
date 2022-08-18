@@ -1,4 +1,4 @@
-package com.realestate.RealEstate.search;
+package com.realestate.RealEstate.userlocation;
 
 import com.realestate.RealEstate.appuser.AppUserService;
 import lombok.AllArgsConstructor;

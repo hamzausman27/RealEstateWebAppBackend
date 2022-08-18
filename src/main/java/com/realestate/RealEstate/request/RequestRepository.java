@@ -13,9 +13,6 @@ import java.util.Optional;
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findById( Long id);
-    Optional<List<Request>> findAllByAgentName(String agentName);
-    Optional<List<Request>> findAllByLocation(String location);
-    Optional<List<Request>> findAllByPropertyAmountGreaterThanEqual(Double propertyAmount);
 
 
 

@@ -1,4 +1,4 @@
-package com.realestate.RealEstate.UserInfo;
+package com.realestate.RealEstate.userinfo;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

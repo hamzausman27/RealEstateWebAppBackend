@@ -15,55 +15,45 @@ public class RequestService {
 
     private final RequestRepository requestRepository;
 
-    boolean addRequest(InputRequest inputRequest) {
+    Request createRequest(String title,String area,String tags,double amount,String location,String description) {
 
-        try {
-            requestRepository.save(new Request(
-                    inputRequest.getAgentName(),
-                    inputRequest.getAgentPhoneNumber(),
-                    inputRequest.getLocation(),
-                    inputRequest.getPropertySize(),
-                    Double.valueOf(inputRequest.getPropertyAmount()),
-                    inputRequest.getTagsAdded()
-            ));
-            logger.info("Request has been uploaded!!");
+        Request request = new Request(title,area,tags,amount,location,description);
+            requestRepository.save(request);
+            logger.info("Request has been created!!");
 
-        } catch (Exception exception) {
-            logger.error(exception.toString());
-        }
-        return false;
+        return request;
     }
 
-    public boolean deleteRequest(InputRequest inputRequest) {
-        if (requestRepository.findById(inputRequest.getRequestId()).isPresent()) {
-            requestRepository.delete(requestRepository.findById(inputRequest.getRequestId()).get());
-            logger.info("Request has been deleted!!");
-            return true;
-        }
-        logger.error("Unable to delete request!");
-        logger.error("Request id is not present in database!! Request Id:" + inputRequest.getRequestId());
-        return false;
-    }
-
-    public List<Request> getRequestsSentToday() {
-//TODO
-        return null;
-    }
-
-    public List<Request> getRequestReceivedToday() {
-//TODO
-        return null;
-    }
-
-    public List<Request> getTotalRequestsSent() {
-//TODO
-        return null;
-    }
-
-    public List<Request> getTotalRequestsSentToday() {
-
-        //TODO
-        return null;
-    }
+//    public boolean deleteRequest(InputRequest inputRequest) {
+//        if (requestRepository.findById(inputRequest.getRequestId()).isPresent()) {
+//            requestRepository.delete(requestRepository.findById(inputRequest.getRequestId()).get());
+//            logger.info("Request has been deleted!!");
+//            return true;
+//        }
+//        logger.error("Unable to delete request!");
+//        logger.error("Request id is not present in database!! Request Id:" + inputRequest.getRequestId());
+//        return false;
+//    }
+//
+//    public List<Request> getRequestsSentToday() {
+////TODO
+//        return null;
+//    }
+//
+//    public List<Request> getRequestReceivedToday() {
+////TODO
+//        return null;
+//    }
+//
+//    public List<Request> getTotalRequestsSent() {
+////TODO
+//        return null;
+//    }
+//
+//    public List<Request> getTotalRequestsSentToday() {
+//
+//        //TODO
+//        return null;
+//    }
 
 }
