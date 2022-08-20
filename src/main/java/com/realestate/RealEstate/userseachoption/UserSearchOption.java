@@ -1,7 +1,6 @@
 package com.realestate.RealEstate.userseachoption;
 
 import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.utils.SearchOption;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,15 +27,15 @@ public class UserSearchOption {
     )
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(
             nullable = false,
             name = "app_user_id"
     )
     private AppUser appUser;
 
-    @Enumerated(EnumType.STRING)
-    private SearchOption searchOption;
+   // @Enumerated(EnumType.STRING)
+    private int searchOption;
 
     private Double maxRange;
 
@@ -44,7 +43,7 @@ public class UserSearchOption {
 
     private String country;
 
-    public UserSearchOption(AppUser appUser, SearchOption searchOption, Double maxRange, String city, String country) {
+    public UserSearchOption(AppUser appUser, int searchOption, Double maxRange, String city, String country) {
         this.appUser = appUser;
         this.searchOption = searchOption;
         this.maxRange = maxRange;

@@ -2,6 +2,8 @@ package com.realestate.RealEstate.userlocation;
 
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserRepository;
+import com.realestate.RealEstate.userseachoption.UserSearchOption;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionRepository;
 import lombok.AllArgsConstructor;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
@@ -11,7 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -22,6 +27,8 @@ public class UserLocationService {
 
     private final UserLocationRepository userLocationRepository;
     private final AppUserRepository appUserRepository;
+
+    private final UserSearchOptionRepository userSearchOptionRepository;
 
 //    boolean addUserLocation(String agentId,String latitude, String longitude){
 //        AppUser appUser = appUserRepository.findById(Long.valueOf(agentId)).get();
@@ -73,7 +80,7 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
     if(appUserOptional.isPresent()){
         Optional<UserLocation> userLocationOptional = userLocationRepository.findByAppUser(appUserOptional.get());
         if(userLocationOptional.isPresent()){
-            logger.info("Updating location of existing user -> userID:" +agentId);
+            logger.info("Updating location of existing user -> userID:" +agentId + ", latitude:"+ latitude + " , longitude:"+longitude);
             userLocationRepository.updateExistingUserLocation(userLocationOptional.get().getId(),latitude,longitude);
 
         }else{
@@ -115,4 +122,33 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
 
     }
 
+    public int getUsersCount(String agentId,int option, String city,String country, int range) {
+    int count = 0;
+    if(option == 3){
+       // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
+       List<AppUser> userSearchOptionList =  appUserRepository.findAll();
+       logger.info("total users in db:" , userSearchOptionList.size());
+        Stream<AppUser> filteredUsersInCountry = userSearchOptionList.stream().filter(val -> Objects.equals(val.getCountry(), country));
+       // logger.info("total users in db:" , filteredUsersInCountry.collect(Collectors.toList()).size());
+        count= filteredUsersInCountry.collect(Collectors.toList()).size();
+        logger.info("Number of users for country:" + country +" , option:" + option + " are : "+count );
+
+        return count;
+    }else if(option == 2){
+            // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
+            List<AppUser> userSearchOptionList =  appUserRepository.findAll();
+        logger.info("total users in db:" , userSearchOptionList.size());
+        Stream<AppUser> filteredUsersInCity = userSearchOptionList.stream().filter(val -> Objects.equals(val.getCity(), city));
+        count= filteredUsersInCity.collect(Collectors.toList()).size();
+            logger.info("Number of users for city:" + city +" , option:" + option + " are : "+count );
+            return count;
+        }
+        else if(option == 1) {
+        count =  getUserInRange(Long.parseLong(agentId),range).size();
+        logger.info("Number of users in range:" + range +" , option:" + option + " are : "+count );
+
+        return count;
+    }
+    return 0;
+    }
 }

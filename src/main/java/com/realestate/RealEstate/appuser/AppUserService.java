@@ -83,7 +83,7 @@ public class AppUserService implements UserDetailsService {
 
     public boolean checkUserExists(AppUser appUser){
 
-        if(!appUserRepository.findByPhoneNumber(appUser.getPhoneNumber()).isPresent() && !appUserRepository.findByEmail(appUser.getEmail()).isPresent() ){
+        if(!appUserRepository.findByPhoneNumber(appUser.getPhoneNumber()).isPresent()){
 
             return false;
         }

@@ -2,14 +2,12 @@ package com.realestate.RealEstate.userlocation;
 
 import com.realestate.RealEstate.appuser.AppUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class SearchController {
     private final AppUserService appUserService;
 
@@ -33,6 +31,10 @@ public class SearchController {
         return userLocationService.testAddUserLocation();
     }
 
+    @PostMapping("/showUserCount")
+    public int showUserCount(@RequestBody LocationUpdateRequest locationUpdateRequest){
+        return userLocationService.getUsersCount(locationUpdateRequest.getAgentId(),locationUpdateRequest.getOption(),locationUpdateRequest.getCity(),locationUpdateRequest.getCountry(),locationUpdateRequest.getRange());
+    }
 
     
 }

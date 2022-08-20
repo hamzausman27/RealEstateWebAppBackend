@@ -20,17 +20,17 @@ public class UserSearchOptionService {
 
     private final UserSearchOptionRepository userSearchOptionRepository;
 
-    private SearchOption getSearchOption(int option){
-        if(option == 1) return SearchOption.SEARCH_BY_DISTANCE;
-        if(option == 2) return SearchOption.SEARCH_BY_CITY;
-
-        return SearchOption.SEARCH_BY_COUNTRY;
-    }
+//    private SearchOption getSearchOption(int option){
+//        if(option == 1) return SearchOption.SEARCH_BY_DISTANCE;
+//        if(option == 2) return SearchOption.SEARCH_BY_CITY;
+//
+//        return SearchOption.SEARCH_BY_COUNTRY;
+//    }
 
     public void addUserSearchOption(AppUser appUser,int option,double maxRange,String city,String country){
         logger.info("Adding new userSearchOption!! for User:"+appUser.toString());
         userSearchOptionRepository.save(new UserSearchOption(
-                appUser,getSearchOption(option),maxRange,city,country
+                appUser,option,maxRange,city,country
         ));
 
     }
@@ -43,12 +43,34 @@ public class UserSearchOptionService {
         }
 
         AppUser appUser = userOptional.get();
-        SearchOption newSearchOption = getSearchOption(newOption);
-        logger.info("Updating user's search for user :" + userId + " , new Search Option:" + newSearchOption.toString());
+        //SearchOption newSearchOption = newOption;
+        logger.info("Updating user's search for user :" + userId + " , new Search Option:" + newOption);
 
-        userSearchOptionRepository.updateUserOption(appUser,newSearchOption);
+        userSearchOptionRepository.updateUserOption(appUser,newOption);
 
         return true;
+    }
+    public UserSearchOptionResponse getUserSearchOption(long userId){
+        Optional<AppUser> userOptional = appUserRepository.findById(userId);
+        if(userOptional.isEmpty()){
+            logger.warn("Unable to getUserSearchOption as user is not present in db!! userId:"+userId);
+            return null;
+        }
+        AppUser appUser = userOptional.get();
+
+        Optional<UserSearchOption> searchOptional = userSearchOptionRepository.findByAppUser(appUser);
+        if(searchOptional.isEmpty()){
+            logger.warn("Unable to getUserSearchOption as user's search option is not present in db!! userId:"+searchOptional.get().toString());
+            return null;
+        }
+        UserSearchOption userSearchOption = searchOptional.get();
+
+        return new UserSearchOptionResponse(
+                userSearchOption.getSearchOption(),
+                userSearchOption.getMaxRange(),
+                userSearchOption.getCity(),
+                userSearchOption.getCountry()
+        );
     }
 
 

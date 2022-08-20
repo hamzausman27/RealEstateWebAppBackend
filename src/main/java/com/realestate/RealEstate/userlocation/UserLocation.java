@@ -25,7 +25,7 @@ public class UserLocation {
     )
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(
             nullable = false,
             name = "app_user_id"
