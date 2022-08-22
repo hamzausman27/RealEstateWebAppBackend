@@ -151,4 +151,38 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
     }
     return 0;
     }
+
+    public List<Long> getUsersIds(String agentId,int option, String city,String country, int range) {
+      List<Long> userIdList = new ArrayList<>();
+      Long senderId = Long.valueOf(agentId);
+        if(option == 3){
+            // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
+            List<AppUser> userSearchOptionList =  appUserRepository.findAll();
+            logger.info("total users in db:" , userSearchOptionList.size());
+            Stream<AppUser> filteredUsersInCountry = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) &&  Objects.equals(val.getCountry(), country));
+            // logger.info("total users in db:" , filteredUsersInCountry.collect(Collectors.toList()).size());
+            userIdList = filteredUsersInCountry.map(AppUser::getId).collect(Collectors.toList());
+            logger.info("Number of users for country:" + country +" , option:" + option + " are : "+ userIdList.size() );
+
+            return userIdList;
+        }else if(option == 2){
+            // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
+            List<AppUser> userSearchOptionList =  appUserRepository.findAll();
+            logger.info("total users in db:" , userSearchOptionList.size());
+            Stream<AppUser> filteredUsersInCity = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) && Objects.equals(val.getCity(), city));
+            userIdList = filteredUsersInCity.map(AppUser::getId).collect(Collectors.toList());
+            logger.info("Number of users for city:" + city +" , option:" + option + " are : "+userIdList.size() );
+            return userIdList;
+        }
+        else if(option == 1) {
+            userIdList =  getUserInRange(Long.parseLong(agentId),range);
+            logger.info("Number of users in range:" + range +" , option:" + option + " are : "+userIdList.size() );
+
+            return userIdList;
+        }
+        return userIdList;
+    }
+
+
+
 }

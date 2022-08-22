@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,7 +18,8 @@ public class RequestService {
 
     Request createRequest(String title,String area,String tags,double amount,String location,String description) {
 
-        Request request = new Request(title,area,tags,amount,location,description);
+        LocalDateTime createdAt = LocalDateTime.now();
+        Request request = new Request(title,area,tags,amount,location,description,createdAt);
             requestRepository.save(request);
             logger.info("Request has been created!!");
 

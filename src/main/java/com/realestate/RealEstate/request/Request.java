@@ -40,12 +40,17 @@ public class Request {
 
     private String description;
 
-    public Request(String title, String area, String tags, double amount, String location, String description) {
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    public Request(String title, String area, String tags, double amount, String location, String description,LocalDateTime createdAt) {
         this.title = title;
         this.area = area;
         this.tags = tags;
         this.amount = amount;
         this.location = location;
         this.description = description;
+        this.createdAt = createdAt;
+
     }
 }
