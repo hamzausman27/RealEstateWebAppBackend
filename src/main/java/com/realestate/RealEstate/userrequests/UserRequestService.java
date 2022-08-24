@@ -69,14 +69,24 @@ public class UserRequestService {
         return userRequestRepository.fetchSentRequestIds(senderId);
     }
 
-    public List<Request> fetchReceivedRequests(long receivedId) {
-        List<Request> receivedRequestList = new ArrayList<>();
+    public List<UserRequestInfoResponse> fetchReceivedRequests(long receivedId) {
+        List<UserRequestInfoResponse> receivedRequestList = new ArrayList<>();
         List<Long> receivedRequestsIds = fetchReceivedRequestsIdList(receivedId);
 
         logger.info("Total sent request count for receiver:"+ receivedId + " is :" + receivedRequestsIds.size());
         for(Long requestId: receivedRequestsIds) {
             Optional<Request> requestOptional = requestRepository.findById(requestId);
-            requestOptional.ifPresent(receivedRequestList::add);
+            if(requestOptional.isPresent()){
+                Request request = requestOptional.get();
+                Optional<UserRequest> userRequestOptional = userRequestRepository.searchByRequest(request);
+
+                if(userRequestOptional.isPresent()){
+                }
+                AppUser sender = userRequestOptional.get().getSenderUser();
+                receivedRequestList.add(new UserRequestInfoResponse(sender.getFullName(),sender.getPhoneNumber(),request.getId(),
+                        request.getTitle(),request.getArea(),request.getTags(),request.getAmount(),request.getLocation(),
+                        request.getDescription(),request.getCreatedAt()));
+            }
         }
         return receivedRequestList;
     }

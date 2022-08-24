@@ -38,8 +38,7 @@ public class UserRequestController {
         return userRequestService.fetchSentRequests(sendRequest.getAgentId());
     }
     @PostMapping("/getReceivedRequests")
-    public List<Request> getUserReceivedRequests(@RequestBody SendRequest sendRequest){
+    public List<UserRequestInfoResponse> getUserReceivedRequests(@RequestBody SendRequest sendRequest){
         return userRequestService.fetchReceivedRequests(sendRequest.getAgentId());
     }
-
 }
