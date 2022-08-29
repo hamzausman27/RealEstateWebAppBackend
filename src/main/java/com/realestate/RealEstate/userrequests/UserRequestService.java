@@ -76,16 +76,18 @@ public class UserRequestService {
         logger.info("Total sent request count for receiver:"+ receivedId + " is :" + receivedRequestsIds.size());
         for(Long requestId: receivedRequestsIds) {
             Optional<Request> requestOptional = requestRepository.findById(requestId);
-            if(requestOptional.isPresent()){
+            if(requestOptional.isPresent()) {
                 Request request = requestOptional.get();
-                Optional<UserRequest> userRequestOptional = userRequestRepository.searchByRequest(request);
 
-                if(userRequestOptional.isPresent()){
+                Long senderId = userRequestRepository.fetchSenderId(request.getId());
+                Optional<AppUser> senderOptional = appUserRepository.findById(senderId);
+
+                if (senderOptional.isPresent()) {
+                    AppUser sender = senderOptional.get();
+                    receivedRequestList.add(new UserRequestInfoResponse(sender.getFullName(), sender.getPhoneNumber(), request.getId(),
+                            request.getTitle(), request.getArea(), request.getTags(), request.getAmount(), request.getLocation(),
+                            request.getDescription(), request.getCreatedAt()));
                 }
-                AppUser sender = userRequestOptional.get().getSenderUser();
-                receivedRequestList.add(new UserRequestInfoResponse(sender.getFullName(),sender.getPhoneNumber(),request.getId(),
-                        request.getTitle(),request.getArea(),request.getTags(),request.getAmount(),request.getLocation(),
-                        request.getDescription(),request.getCreatedAt()));
             }
         }
         return receivedRequestList;
