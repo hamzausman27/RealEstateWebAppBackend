@@ -14,4 +14,5 @@ public class UserSearchOptionResponse {
     private final double maxRange;
     private final String ciy;
     private final String country;
+    private final String token;
 }

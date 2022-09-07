@@ -14,14 +14,10 @@ public class UserInfo {
     private String fullName;
     private String email;
     private String phoneNumber;
-
     private String companyName;
     private String country;
-
     private String state;
     private String city;
-
     private String area;
-
     private String licenseNumber;
 }

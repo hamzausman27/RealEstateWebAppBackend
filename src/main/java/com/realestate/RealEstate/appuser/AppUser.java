@@ -50,13 +50,10 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
 
     @Column(columnDefinition = "TINYINT")
-    private Boolean locked = false;
+    private Boolean locked = true;
     @Column(columnDefinition = "TINYINT")
     private Boolean verified = false;
 
-
-    @Enumerated(EnumType.STRING)
-    private SearchOption searchOption;
 
 
 

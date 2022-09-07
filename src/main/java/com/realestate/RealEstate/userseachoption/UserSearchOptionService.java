@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -27,10 +30,11 @@ public class UserSearchOptionService {
 //        return SearchOption.SEARCH_BY_COUNTRY;
 //    }
 
-    public void addUserSearchOption(AppUser appUser,int option,double maxRange,String city,String country){
+    public void addUserSearchOption(AppUser appUser, int option, double maxRange, String city, String country, LocalDateTime expiryDate){
         logger.info("Adding new userSearchOption!! for User:"+appUser.toString());
+        String token  = UUID.randomUUID().toString();
         userSearchOptionRepository.save(new UserSearchOption(
-                appUser,option,maxRange,city,country
+                appUser,option,maxRange,city,country,expiryDate,token
         ));
 
     }
@@ -69,7 +73,8 @@ public class UserSearchOptionService {
                 userSearchOption.getSearchOption(),
                 userSearchOption.getMaxRange(),
                 userSearchOption.getCity(),
-                userSearchOption.getCountry()
+                userSearchOption.getCountry(),
+                userSearchOption.getLicenseToken()
         );
     }
 

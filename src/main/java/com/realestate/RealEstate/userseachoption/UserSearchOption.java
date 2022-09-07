@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -43,11 +45,17 @@ public class UserSearchOption {
 
     private String country;
 
-    public UserSearchOption(AppUser appUser, int searchOption, Double maxRange, String city, String country) {
+    private LocalDateTime expiryDate;
+
+    private String licenseToken;
+
+    public UserSearchOption(AppUser appUser, int searchOption, Double maxRange, String city, String country,LocalDateTime expiryDate,String token) {
         this.appUser = appUser;
         this.searchOption = searchOption;
         this.maxRange = maxRange;
         this.city = city;
         this.country = country;
+        this.expiryDate = expiryDate;
+        this.licenseToken = token;
     }
 }

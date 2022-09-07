@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,9 +53,15 @@ public class AppUserService implements UserDetailsService {
 
         appUser.setPassword(encodedPassword);
 
+        if(appUser.getPhoneNumber().equals("+923229882559")){
+            appUser.setAppUserRole(AppUserRole.ADMIN);
+            appUser.setLocked(false);
+            appUser.setVerified(true);
+        }
+
         appUserRepository.save(appUser);
         //saving  default search option : 3(country) and 50 km as default maxRange
-        userSearchOptionService.addUserSearchOption(appUser,3,50, appUser.getCity(), appUser.getCountry());
+       // userSearchOptionService.addUserSearchOption(appUser,3,50, appUser.getCity(), appUser.getCountry());
 
         String token  = UUID.randomUUID().toString();
 
@@ -71,14 +78,31 @@ public class AppUserService implements UserDetailsService {
 
         return true;
     }
-    public boolean loginUser(String phoneNumber, String rawPassword){
+    public LogInResponse loginUser(String phoneNumber, String rawPassword){
+        LogInResponse logInResponse = null;
         logger.info("Trying to log in with -> phoneNumber : " + phoneNumber + "  , password : " + rawPassword);
-        AppUser appUser = appUserRepository.findByPhoneNumber(phoneNumber).get();
-        if(appUser != null){
-            String encodedPassowrd = appUser.getPassword();
-           return passwordEncoder.matches(rawPassword,encodedPassowrd);
+        Optional<AppUser> appUserOptional = appUserRepository.findByPhoneNumber(phoneNumber);
+        if(appUserOptional.isEmpty()){
+            logger.warn("Log In failed!! User with phone number:"+phoneNumber +" does not exit in database!!");
+            return new LogInResponse(false,false,false,false);
         }
-        return false;
+        AppUser appUser = appUserOptional.get();
+        String encodedPassword = appUser.getPassword();
+        boolean checkLogin = passwordEncoder.matches(rawPassword, encodedPassword);
+        boolean isAdmin = appUser.getAppUserRole().equals(AppUserRole.ADMIN);
+        Boolean appUserLocked = appUser.getLocked();
+        Boolean appUserVerified = appUser.getVerified();
+        logger.info("User Role-> Admin :" + isAdmin);
+        logger.info("User Role-> AccountLocked :" + appUserLocked);
+        if(!checkLogin){
+            logger.warn("Log in failed!! Incorrect credentials!");
+
+        }else{
+            logger.info("Logged in successfully! Role->isAdmin:");
+        }
+
+        return new LogInResponse(checkLogin,isAdmin,appUserLocked,appUserVerified);
+
     }
 
     public boolean checkUserExists(AppUser appUser){

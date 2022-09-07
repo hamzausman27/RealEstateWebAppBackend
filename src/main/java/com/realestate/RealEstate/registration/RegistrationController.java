@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.registration;
 
+import com.realestate.RealEstate.appuser.LogInResponse;
 import com.realestate.RealEstate.userinfo.UserInfo;
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserService;
@@ -42,7 +43,7 @@ public class RegistrationController {
         return false;
     }
     @PostMapping("/login")
-    public Boolean login(@RequestBody LoginRequest loginRequest){
+    public LogInResponse login(@RequestBody LoginRequest loginRequest){
 
         return appUserService.loginUser(loginRequest.getPhone(),loginRequest.getPassword());
 
