@@ -1,6 +1,9 @@
 package com.realestate.RealEstate.registration;
 
 import com.realestate.RealEstate.appuser.LogInResponse;
+import com.realestate.RealEstate.notification.Notification;
+import com.realestate.RealEstate.notification.NotificationService;
+import com.realestate.RealEstate.notification.UserNotificationResponse;
 import com.realestate.RealEstate.userinfo.UserInfo;
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserService;
@@ -11,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -26,6 +31,8 @@ public class RegistrationController {
     private ConfirmationTokenService confirmationTokenService;
 
     private UserSearchOptionService userSearchOptionService;
+
+    private NotificationService notificationService;
 
     @PostMapping("/registration")
     public Boolean register(@RequestBody RegistrationRequest request){
@@ -79,6 +86,8 @@ public class RegistrationController {
     public UserInfo getUserInfo(@RequestBody VerificationRequest verificationRequest){
         AppUser appUser = appUserService.getAppUser(verificationRequest.getPhone());
         String license = userSearchOptionService.getLicenseNumber(appUser);
+        List<UserNotificationResponse> notificationList = notificationService.getUserNotifications(appUser.getId());
+        int count = notificationList.size();
         return new UserInfo(
                 appUser.getId(),
                 appUser.getFullName(),
@@ -89,7 +98,9 @@ public class RegistrationController {
                 appUser.getState(),
                 appUser.getCity(),
                 appUser.getArea(),
-                license
+                license,
+                count,
+                notificationList
         );
     }
 

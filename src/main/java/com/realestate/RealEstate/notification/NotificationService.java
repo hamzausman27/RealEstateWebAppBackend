@@ -15,7 +15,7 @@ public class NotificationService {
     private final static Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationRepository notificationRepository;
 
-    List<UserNotificationResponse> getUserNotifications(Long userId){
+    public List<UserNotificationResponse> getUserNotifications(Long userId){
        List<UserNotificationResponse> result = new ArrayList<>();
         for(Notification notification: notificationRepository.getAllByUserId(userId)){
             result.add(new UserNotificationResponse(notification.getDescription(),notification.getCreatedAt(),notification.isRead()));
@@ -27,6 +27,4 @@ public class NotificationService {
         logger.info("Adding notification of userId:"+userId+" -> notification:"+desc);
         notificationRepository.save(new Notification(userId,desc));
     }
-
-
 }

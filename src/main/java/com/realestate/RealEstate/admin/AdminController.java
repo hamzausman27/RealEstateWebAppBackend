@@ -33,11 +33,16 @@ public class AdminController {
         return adminUserService.removeUserData(userInfoForAdmin.getId());
 
     }
-    @PostMapping("/blockUser")
-    public boolean blockUser(@RequestBody UserInfoForAdmin userInfoForAdmin){
+    @PostMapping("/blockOrUnblockUser")
+    public boolean blockOrUnblockUser(@RequestBody UserInfoForAdmin userInfoForAdmin){
 
-        return adminUserService.blockUser(userInfoForAdmin.getId());
+        if(userInfoForAdmin.getStatus().equals("Active")){
+            return adminUserService.blockUser(userInfoForAdmin.getId());
+        }else if(userInfoForAdmin.getStatus().equals("Blocked")){
+            return adminUserService.unBlockUser(userInfoForAdmin.getId());
+        }
 
+        return false;
     }
 
     @PostMapping("/unBlockUser")

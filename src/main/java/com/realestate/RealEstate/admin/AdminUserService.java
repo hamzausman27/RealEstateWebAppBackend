@@ -26,10 +26,8 @@ public class AdminUserService {
         List<UserInfoForAdmin> allUsers = new ArrayList<>();
         String status = null;
         for(AppUser appUser: appUserRepository.findAll()){
-            if(!appUser.getAppUserRole().equals(AppUserRole.ADMIN)){
-                if(!appUser.getVerified()){
-                    status = "Pending";
-                }else if(appUser.getVerified() && appUser.getLocked()){
+            if(!appUser.getAppUserRole().equals(AppUserRole.ADMIN) && appUser.getVerified()){
+                 if(appUser.getVerified() && appUser.getLocked()){
                     status = "Blocked";
                 }else if(appUser.getVerified() && !appUser.getLocked()){
                     status = "Active";
