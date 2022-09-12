@@ -72,9 +72,9 @@ public class AppUserService implements UserDetailsService {
                 appUser
         );
 
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
+       // confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        smsService.sendSms(prepareSmsRequest(appUser.getPhoneNumber()));
+       // smsService.sendSms(prepareSmsRequest(appUser.getPhoneNumber()));
 
         return true;
     }

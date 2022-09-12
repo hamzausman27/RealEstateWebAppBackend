@@ -26,6 +26,33 @@ public class AdminController {
         return new AdminResponseObject(allUserList,activeUserList,pendingUserList,blockedUserList);
     }
 
+    @PostMapping("/deleteUserData")
+
+    public boolean removeUserData(@RequestBody UserInfoForAdmin userInfoForAdmin){
+
+        return adminUserService.removeUserData(userInfoForAdmin.getId());
+
+    }
+    @PostMapping("/blockUser")
+    public boolean blockUser(@RequestBody UserInfoForAdmin userInfoForAdmin){
+
+        return adminUserService.blockUser(userInfoForAdmin.getId());
+
+    }
+
+    @PostMapping("/unBlockUser")
+    public boolean unBlockUser(@RequestBody UserInfoForAdmin userInfoForAdmin){
+
+        return adminUserService.unBlockUser(userInfoForAdmin.getId());
+
+    }
+
+    @PostMapping("/approveUser")
+    public boolean approveUser(@RequestBody UserSearchInfo userSearchInfo){
+
+        return adminUserService.approvePendingAccount(userSearchInfo.getId(), userSearchInfo.getSearchOption(), userSearchInfo.getMaxRange(),userSearchInfo.getExpiryDate());
+
+    }
 
 
 }

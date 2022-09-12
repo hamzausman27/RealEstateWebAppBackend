@@ -1,13 +1,11 @@
 package com.realestate.RealEstate.admin;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
 public class UserInfoForAdmin {
     private final Long id;

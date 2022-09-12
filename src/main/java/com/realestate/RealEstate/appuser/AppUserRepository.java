@@ -23,6 +23,26 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "SET a.verified = TRUE WHERE a.phoneNumber = ?1")
     int enableAppUser(String phoneNumber);
 
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.verified = TRUE WHERE a.id = ?1")
+    int verifyAppUser(Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.locked = TRUE WHERE a.id = ?1")
+    int blockAppUser(Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.locked = FALSE WHERE a.id = ?1")
+    int unBlockAppUser(Long id);
+
     @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +

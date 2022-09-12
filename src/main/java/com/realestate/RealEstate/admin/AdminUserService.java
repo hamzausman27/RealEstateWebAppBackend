@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,22 +72,54 @@ public class AdminUserService {
         return blockedUsers;
     }
 
-    public boolean approvePendingAccount(Long agentId, int searchOption, int maxRange, LocalDateTime expirationDate){
+    public boolean approvePendingAccount(Long agentId, int searchOption, int maxRange, LocalDate expirationDate){
         Optional<AppUser> appUserOptional = appUserRepository.findById(agentId);
         if(appUserOptional.isEmpty()){
             logger.warn("Invalid user id!! userId:"+agentId);
             return false;
         }
         AppUser appUser = appUserOptional.get();
-        //LocalDateTime expiryDate =;
 
-        appUser.setLocked(false);
         logger.info("Adding user SearchOption");
         userSearchOptionService.addUserSearchOption(appUser,searchOption,maxRange, appUser.getCity(), appUser.getCountry(),expirationDate);
+        logger.info("Verifying user!!");
+        appUserRepository.verifyAppUser(agentId);
 
-
-        return false;
+        return true;
     }
 
 
+    public boolean removeUserData(Long id) {
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(appUserOptional.isEmpty()){
+            logger.warn("Unable to delete user as it does not exist in db! id:"+id);
+            return false;
+        }
+        appUserRepository.deleteById(id);
+        logger.info("User with id :"+id+" has been deleted!!");
+        return true;
+
+    }
+
+    public boolean blockUser(Long id) {
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(appUserOptional.isEmpty()){
+            logger.warn("Unable to block user as it does not exist in db! id:"+id);
+            return false;
+        }
+        appUserRepository.blockAppUser(id);
+        logger.info("User with id:"+id+" has been blocked!");
+        return true;
+    }
+
+    public boolean unBlockUser(Long id) {
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(appUserOptional.isEmpty()){
+            logger.warn("Unable to unblock user as it does not exist in db! id:"+id);
+            return false;
+        }
+        appUserRepository.unBlockAppUser(id);
+        logger.info("User with id:"+id+" has been unblocked!");
+        return true;
+    }
 }

@@ -1,6 +1,5 @@
 package com.realestate.RealEstate.appuser;
 
-import com.realestate.RealEstate.utils.SearchOption;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,14 +49,9 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
 
     @Column(columnDefinition = "TINYINT")
-    private Boolean locked = true;
+    private Boolean locked = false;
     @Column(columnDefinition = "TINYINT")
     private Boolean verified = false;
-
-
-
-
-
 
     public AppUser(String fullName, String email, String phoneNumber, String companyName, String country, String state, String city, String area, String password, AppUserRole appUserRole) {
         this.fullName = fullName;

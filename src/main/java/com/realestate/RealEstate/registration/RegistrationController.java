@@ -6,6 +6,7 @@ import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserService;
 import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class RegistrationController {
     private PasscodeVerificationService passcodeVerificationService;
 
     private ConfirmationTokenService confirmationTokenService;
+
+    private UserSearchOptionService userSearchOptionService;
+
     @PostMapping("/registration")
     public Boolean register(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
@@ -74,7 +78,7 @@ public class RegistrationController {
     @PostMapping("/getUserInfo")
     public UserInfo getUserInfo(@RequestBody VerificationRequest verificationRequest){
         AppUser appUser = appUserService.getAppUser(verificationRequest.getPhone());
-        String license = confirmationTokenService.getLicenseNumber(appUser);
+        String license = userSearchOptionService.getLicenseNumber(appUser);
         return new UserInfo(
                 appUser.getId(),
                 appUser.getFullName(),

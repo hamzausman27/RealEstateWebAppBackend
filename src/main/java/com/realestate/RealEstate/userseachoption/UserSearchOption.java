@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -39,17 +40,17 @@ public class UserSearchOption {
    // @Enumerated(EnumType.STRING)
     private int searchOption;
 
-    private Double maxRange;
+    private int maxRange;
 
     private String city;
 
     private String country;
 
-    private LocalDateTime expiryDate;
+    private LocalDate expiryDate;
 
     private String licenseToken;
 
-    public UserSearchOption(AppUser appUser, int searchOption, Double maxRange, String city, String country,LocalDateTime expiryDate,String token) {
+    public UserSearchOption(AppUser appUser, int searchOption, int maxRange, String city, String country,LocalDate expiryDate,String token) {
         this.appUser = appUser;
         this.searchOption = searchOption;
         this.maxRange = maxRange;
