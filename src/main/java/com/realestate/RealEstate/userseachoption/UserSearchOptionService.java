@@ -75,7 +75,8 @@ public class UserSearchOptionService {
                 userSearchOption.getMaxRange(),
                 userSearchOption.getCity(),
                 userSearchOption.getCountry(),
-                userSearchOption.getLicenseToken()
+                userSearchOption.getLicenseToken(),
+                userSearchOption.getExpiryDate()
         );
     }
 

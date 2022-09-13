@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -15,4 +17,6 @@ public class UserSearchOptionResponse {
     private final String ciy;
     private final String country;
     private final String token;
+    private final LocalDate expiryDate;
+
 }
