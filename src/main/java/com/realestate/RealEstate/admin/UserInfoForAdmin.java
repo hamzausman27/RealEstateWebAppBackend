@@ -1,6 +1,8 @@
 package com.realestate.RealEstate.admin;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -16,4 +18,6 @@ public class UserInfoForAdmin {
     private final String state;
     private final String country;
     private final String status;
+    private final LocalDate expiryDate;
+    private final String searchOption;
 }

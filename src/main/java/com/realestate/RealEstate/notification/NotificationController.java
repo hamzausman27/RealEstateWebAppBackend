@@ -21,11 +21,15 @@ public class NotificationController {
 
     @PostMapping("/getUserUpdatedData")
     public NotificationsAndReceivedRequestResponse getUserUpdatedData(@RequestBody NotificationRequest notificationRequest){
-        List<UserNotificationResponse> notificationResponseList = notificationService.getUserNotifications(notificationRequest.getId());
+        List<UserNotificationResponse> notificationResponseList = notificationService.getUnreadUserNotifications(notificationRequest.getId());
         List<UserRequestInfoResponse> allReceivedRequests = userRequestService.fetchReceivedRequests(notificationRequest.getId());
         List<UserRequestInfoResponse> receivedRequestsToday = allReceivedRequests.stream().filter(request -> Objects.equals(request.getCreatedAt().toLocalDate(), LocalDate.now())).collect(Collectors.toList());
                                 return new NotificationsAndReceivedRequestResponse(notificationResponseList,allReceivedRequests,receivedRequestsToday);
 
+    }
+    @PostMapping("/updatedNotificationStatus")
+    public void updatedNotificationStatus(@RequestBody NotificationRequest notificationRequest){
+        notificationService.setAllNotificationRead(notificationRequest.getId());
     }
 
 }

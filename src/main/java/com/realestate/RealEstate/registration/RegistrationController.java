@@ -86,7 +86,7 @@ public class RegistrationController {
     public UserInfo getUserInfo(@RequestBody VerificationRequest verificationRequest){
         AppUser appUser = appUserService.getAppUser(verificationRequest.getPhone());
         String license = userSearchOptionService.getLicenseNumber(appUser);
-        List<UserNotificationResponse> notificationList = notificationService.getUserNotifications(appUser.getId());
+        List<UserNotificationResponse> notificationList = notificationService.getUnreadUserNotifications(appUser.getId());
         int count = notificationList.size();
         return new UserInfo(
                 appUser.getId(),

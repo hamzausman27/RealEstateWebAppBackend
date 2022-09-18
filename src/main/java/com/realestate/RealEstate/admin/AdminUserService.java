@@ -3,6 +3,7 @@ package com.realestate.RealEstate.admin;
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserRepository;
 import com.realestate.RealEstate.appuser.AppUserRole;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionResponse;
 import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -32,10 +33,24 @@ public class AdminUserService {
                 }else if(appUser.getVerified() && !appUser.getLocked()){
                     status = "Active";
                 }
-                 allUsers.add(new UserInfoForAdmin(appUser.getId(),appUser.getFullName(),appUser.getPhoneNumber(),appUser.getArea(),appUser.getCity(),appUser.getState(),appUser.getCountry(),status));
+                UserSearchOptionResponse userSearchOption = userSearchOptionService.getUserSearchOption(appUser.getId());
+
+                allUsers.add(new UserInfoForAdmin(appUser.getId(),appUser.getFullName(),appUser.getPhoneNumber(),appUser.getArea(),appUser.getCity(),appUser.getState(),appUser.getCountry(),status,userSearchOption.getExpiryDate(),getSearchOptionString(userSearchOption.getSearchOption(),userSearchOption.getMaxRange())));
             }
         }
         return allUsers;
+    }
+
+    private String getSearchOptionString(int option,double maxDistance){
+        String res= "";
+        if(option == 1) {
+            res = "Range("+maxDistance+" km)";
+        }else if(option == 2) {
+            res = "City,Range("+maxDistance+" km)";
+        }else if(option == 3) {
+            res = "Country,City,Range("+maxDistance+" km)";
+        }
+        return res;
     }
 
     // show pendingRequest

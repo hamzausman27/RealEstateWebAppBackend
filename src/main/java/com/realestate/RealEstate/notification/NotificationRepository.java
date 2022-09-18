@@ -2,6 +2,7 @@ package com.realestate.RealEstate.notification;
 
 import com.realestate.RealEstate.appuser.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,4 +17,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     //@Query(value = "SELECT description  from notification n where u.agent_id= ?1 order by request_id desc ", nativeQuery = true)
     List<Notification> getAllByUserId(Long userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Notification n " +
+            "SET n.isRead = TRUE WHERE n.userId = ?1")
+    int updateNotificationsStatus(Long userId);
 }

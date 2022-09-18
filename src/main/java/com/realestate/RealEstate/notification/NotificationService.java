@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -15,16 +16,24 @@ public class NotificationService {
     private final static Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationRepository notificationRepository;
 
-    public List<UserNotificationResponse> getUserNotifications(Long userId){
+    public List<UserNotificationResponse> getUnreadUserNotifications(Long userId){
        List<UserNotificationResponse> result = new ArrayList<>();
-        for(Notification notification: notificationRepository.getAllByUserId(userId)){
+
+        List<Notification> notificationList = notificationRepository.getAllByUserId(userId);
+        List<Notification> unreadNotifications = notificationList.stream().filter(val -> !val.isRead()).collect(Collectors.toList());
+        for(Notification notification: unreadNotifications){
             result.add(new UserNotificationResponse(notification.getDescription(),notification.getCreatedAt(),notification.isRead()));
         }
-        logger.info("Total notifications for user id:" + userId+" are :"+result.size());
+        logger.info("Total unread notifications for user id:" + userId+" are :"+result.size());
         return result;
     }
     public void addUserNotification(Long userId,String desc){
         logger.info("Adding notification of userId:"+userId+" -> notification:"+desc);
         notificationRepository.save(new Notification(userId,desc));
     }
+    public void setAllNotificationRead(Long userId){
+        logger.info("Updating all user notifications as read for user:" + userId);
+        notificationRepository.updateNotificationsStatus(userId);
+    }
+
 }
