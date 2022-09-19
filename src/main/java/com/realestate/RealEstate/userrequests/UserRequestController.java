@@ -7,6 +7,7 @@ import com.realestate.RealEstate.request.Request;
 import com.realestate.RealEstate.request.RequestService;
 import com.realestate.RealEstate.websocket.WebSocketController;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,10 @@ public class UserRequestController {
             String notificationDesc = "You have received a request from "+senderUser.getFullName()+".";
             notificationService.addUserNotification(receiverId,notificationDesc);
             AppUser receiverUser = appUserRepository.findById(receiverId).get();
-            logger.info("Received Private message is : receiver:" + receiverUser.getPhoneNumber()+ " sender:" + senderUser.getPhoneNumber()+" content:" +"yehhhl");
-            simpMessagingTemplate.convertAndSendToUser(receiverUser.getPhoneNumber(),"/private",request); // /user/David/private
+            UserNotificationResponse userNotificationResponse = new UserNotificationResponse(request.getId(), request.getTitle(), request.getArea(), request.getTags(), request.getAmount(), request.getLocation(), request.getDescription(), request.getCreatedAt(),senderUser.getFullName());
+            logger.info("Received Private message is : receiver:" + receiverUser.getPhoneNumber()+ " sender:" + senderUser.getPhoneNumber());
+
+            simpMessagingTemplate.convertAndSendToUser(receiverUser.getPhoneNumber(),"/private",userNotificationResponse); // /user/David/private
 
         }
         return userRequestService.fetchSentRequests(sendRequest.getAgentId());
