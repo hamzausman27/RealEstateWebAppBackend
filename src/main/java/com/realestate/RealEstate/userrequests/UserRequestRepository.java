@@ -27,4 +27,18 @@ public interface UserRequestRepository extends JpaRepository<UserRequest,Long> {
     @Query(value = "SELECT sender_user_id  from user_request u where u.request_id= ?1 ", nativeQuery = true)
     long fetchSenderId(Long requestId);
 
+//  @Query(value = "SELECT id  from user_request u where u.request_id= ?1 ", nativeQuery = true)
+//  long fetchUserRequestId(Long requestId);
+
+
+  @Transactional
+  @Modifying
+  @Query("UPDATE UserRequest u " +
+          "SET u.accepted = TRUE WHERE u.receiverUser= ?1 and u.request= ?2 ")
+    int updateReceivedRequestAsRead(AppUser receiver,Request request);
+
+
+  @Query(value = "Select id FROM user_request u where u.receiver_user_id= ?1 and u.request_id= ?2 ", nativeQuery = true)
+  long fetchReceivedRequestId(Long receiverId,Long requestId);
+
 }

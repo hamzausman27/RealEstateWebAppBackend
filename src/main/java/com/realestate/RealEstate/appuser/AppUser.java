@@ -53,6 +53,9 @@ public class AppUser implements UserDetails {
     @Column(columnDefinition = "TINYINT")
     private Boolean verified = false;
 
+    @Column(columnDefinition = "TINYINT")
+    private Boolean notificationSound = true;
+
     public AppUser(String fullName, String email, String phoneNumber, String companyName, String country, String state, String city, String area, String password, AppUserRole appUserRole) {
         this.fullName = fullName;
         this.email = email;

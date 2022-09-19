@@ -82,11 +82,15 @@ public class UserRequestService {
                 Long senderId = userRequestRepository.fetchSenderId(request.getId());
                 Optional<AppUser> senderOptional = appUserRepository.findById(senderId);
 
+                long userRequestId = userRequestRepository.fetchReceivedRequestId(receivedId,requestId);
+                Optional<UserRequest> userRequestOptional = userRequestRepository.findById(userRequestId);
+                //userRequestOptional.get().
+
                 if (senderOptional.isPresent()) {
                     AppUser sender = senderOptional.get();
                     receivedRequestList.add(new UserRequestInfoResponse(sender.getFullName(), sender.getPhoneNumber(), request.getId(),
                             request.getTitle(), request.getArea(), request.getTags(), request.getAmount(), request.getLocation(),
-                            request.getDescription(), request.getCreatedAt()));
+                            request.getDescription(), request.getCreatedAt(),userRequestOptional.get().getAccepted()));
                 }
             }
         }
@@ -96,5 +100,34 @@ public class UserRequestService {
     private List<Long> fetchReceivedRequestsIdList(Long receiverId) {
         logger.info("fetching sent request ids for sender:"+ receiverId);
         return userRequestRepository.fetchReceivedRequestIds(receiverId);
+    }
+
+    public void updateUserReceivedRequestAsAccepted(Long userId,Long requestId){
+        logger.info("updating received request as accepted for user:"+ userId);
+
+        Optional<AppUser> receiverOptional = appUserRepository.findById(userId);
+        Optional<Request> requestOptional = requestRepository.findById(requestId);
+        if(receiverOptional.isPresent() && requestOptional.isPresent()){
+
+            userRequestRepository.updateReceivedRequestAsRead(receiverOptional.get(),requestOptional.get());
+
+        }else{
+            logger.warn("updateUserReceivedRequestAsAccepted is failed !!!!");
+        }
+        // userRequestRepository.delete();
+    }
+
+    public void deleteUserReceivedRequest(Long userId,Long requestId){
+        logger.info("deleting received request as it is declined by user:"+ userId);
+
+        long receivedRequestId = userRequestRepository.fetchReceivedRequestId(userId, requestId);
+        Optional<UserRequest> optionalUserRequest = userRequestRepository.findById(receivedRequestId);
+        if(optionalUserRequest.isPresent()){
+            userRequestRepository.delete(optionalUserRequest.get());
+        }else{
+            logger.warn("deleteUserReceivedRequest is failed !!!!");
+        }
+
+        // userRequestRepository.deleteReceivedRequest(userId,requestId);
     }
 }

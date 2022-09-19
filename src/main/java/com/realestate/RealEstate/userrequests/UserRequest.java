@@ -49,10 +49,15 @@ public class UserRequest {
     )
     private Request request;
 
+    @Column(columnDefinition = "TINYINT")
+    private Boolean accepted = false;
+
+
 
     public UserRequest(AppUser senderUser, AppUser receiverUser, Request request) {
         this.senderUser = senderUser;
         this.receiverUser = receiverUser;
         this.request = request;
+        this.accepted = false;
     }
 }

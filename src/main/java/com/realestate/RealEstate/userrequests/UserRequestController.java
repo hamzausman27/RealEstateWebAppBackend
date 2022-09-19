@@ -59,4 +59,13 @@ public class UserRequestController {
     public List<UserRequestInfoResponse> getUserReceivedRequests(@RequestBody SendRequest sendRequest){
         return userRequestService.fetchReceivedRequests(sendRequest.getAgentId());
     }
+    @PostMapping("/deleteReceivedRequests")
+    public void deleteReceivedRequests(@RequestBody RequestObject requestObject){
+         userRequestService.deleteUserReceivedRequest(requestObject.getUserId(),requestObject.getUserRequestId());
+    }
+    @PostMapping("/accpetReceivedRequests")
+    public void acceptReceivedRequests(@RequestBody RequestObject requestObject){
+         userRequestService.updateUserReceivedRequestAsAccepted(requestObject.getUserId(),requestObject.getUserRequestId());
+    }
+
 }

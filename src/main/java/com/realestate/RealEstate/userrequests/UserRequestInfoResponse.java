@@ -23,4 +23,5 @@ public class UserRequestInfoResponse {
     private final String location;
     private final String description;
     private final LocalDateTime createdAt;
+    private final boolean accepted;
 }

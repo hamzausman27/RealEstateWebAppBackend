@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -93,6 +94,10 @@ public class AppUserService implements UserDetailsService {
         Boolean appUserLocked = appUser.getLocked();
         Boolean appUserVerified = appUser.getVerified();
         logger.info("User Role-> Admin :" + isAdmin);
+        if(isAdmin){
+            addDummyData();
+        }
+
         logger.info("User Role-> AccountLocked :" + appUserLocked);
         if(!checkLogin){
             logger.warn("Log in failed!! Incorrect credentials!");
@@ -102,6 +107,20 @@ public class AppUserService implements UserDetailsService {
         }
 
         return new LogInResponse(checkLogin,isAdmin,appUserLocked,appUserVerified);
+
+    }
+
+
+    private void addDummyData(){
+        AppUser appUser = new AppUser("Hamza Usman","hamza@gmail.com","+923229882558","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+
+        AppUser appUser1 = new AppUser("Hamza Rehman","hamza@gmail.com","+923229882557","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+
+        AppUser appUser2 = new AppUser("Haris Khan","hamza@gmail.com","+923229882556","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+
+        signUpUser(appUser);
+        signUpUser(appUser1);
+        signUpUser(appUser2);
 
     }
 
@@ -156,5 +175,64 @@ public class AppUserService implements UserDetailsService {
         return appUser;
     }
 
+
+    public void udpateNotificationSound(long userId) {
+
+        Optional<AppUser> appUserOptional = appUserRepository.findById(userId);
+        if(appUserOptional.isPresent()){
+            Boolean notificationSound = appUserOptional.get().getNotificationSound();
+            if(notificationSound){
+                logger.info("Muting notification sound for user:"+userId);
+                appUserRepository.muteNotificationSound(userId);
+            }else{
+                logger.info("Unmuting notification sound for user:"+userId);
+                appUserRepository.unMuteNotificationSound(userId);
+            }
+
+            logger.info("Notification sound changed successfully for user:"+userId);
+
+        }else{
+            logger.warn("muteNotificationSound FAILED !!! User id is invalid -> userId:"+userId);
+        }
+
+    }
+
+    public EditUserInfoResponse editUserInfo(Long userId,String newPhone,String newName,String newAddress){
+        Optional<AppUser> appUserOptional = appUserRepository.findById(userId);
+        if(appUserOptional.isPresent()){
+            logger.info("Checking if new phone already exits!!");
+            Optional<AppUser> checkUserOptional = appUserRepository.findByPhoneNumber(newPhone);
+            if(checkUserOptional.isPresent() && !Objects.equals(checkUserOptional.get().getId(), userId)){
+                logger.warn("New phone is already in use!!!");
+                return new EditUserInfoResponse(false,"Update Failed as given phone number is already in use! entered phone:"+ newPhone);
+            }else{
+                logger.info("Going to edit user info!!!");
+                appUserRepository.editUserInfo(userId,newPhone,newName,newAddress);
+                return new EditUserInfoResponse(true,"User Info has been updated!");
+            }
+
+        }
+        logger.warn("Invalid user id!!!!");
+        return new EditUserInfoResponse(false,"Incorrect UserID given");
+    }
+
+    public boolean checkOldPassword(Long userId,String oldPassword){
+        Optional<AppUser> appUserOptional = appUserRepository.findById(userId);
+        if(appUserOptional.isPresent()){
+            AppUser appUser = appUserOptional.get();
+            String encodedPassword = appUser.getPassword();
+            boolean checkLogin = passwordEncoder.matches(oldPassword, encodedPassword);
+            if(checkLogin){
+                logger.info("CorrectPassword");
+            }else{
+                logger.warn("Incorrect password");
+            }
+            return checkLogin;
+
+        }
+
+        logger.warn("User id is invalid! userId:"+ userId);
+        return false;
+    }
 
 }

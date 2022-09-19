@@ -25,4 +25,5 @@ public class UserInfo {
     private String licenseNumber;
     private int notificationsCount;
     private List<UserNotificationResponse> notificationList;
+    private boolean notificationSound;
 }

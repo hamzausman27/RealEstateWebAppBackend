@@ -49,4 +49,25 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "SET a.password = ?2 WHERE a.phoneNumber = ?1")
     Integer updateUserPassword(String phoneNumber,String encodedPassword);
 
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.notificationSound = FALSE WHERE a.id = ?1")
+    int muteNotificationSound(Long userId);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.notificationSound = TRUE WHERE a.id = ?1")
+    int unMuteNotificationSound(Long userId);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.phoneNumber = ?2,a.fullName=?3,a.area=?4 WHERE a.id = ?1")
+    int editUserInfo(Long userId,String newPhone,String newName,String newAddress);
+
 }

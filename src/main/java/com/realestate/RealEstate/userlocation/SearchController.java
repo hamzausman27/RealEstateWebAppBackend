@@ -23,10 +23,6 @@ public class SearchController {
         return "User location is not updated!!";
     }
 
-//    @PostMapping("/addUserPoint")
-//    public boolean addUserPoint(@RequestBody LocationUpdateRequest locationUpdateRequest){
-//        return userLocationService.addUserLocation(locationUpdateRequest.getAgentId(),locationUpdateRequest.getLatitude(),locationUpdateRequest.getLongitude());
-//    }
 
     @PostMapping("/testAddUser")
     public boolean testAddUserPoint(){

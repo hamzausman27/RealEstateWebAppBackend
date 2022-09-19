@@ -1,5 +1,6 @@
 package com.realestate.RealEstate.registration;
 
+import com.realestate.RealEstate.appuser.EditUserInfoResponse;
 import com.realestate.RealEstate.appuser.LogInResponse;
 import com.realestate.RealEstate.notification.Notification;
 import com.realestate.RealEstate.notification.NotificationService;
@@ -9,6 +10,7 @@ import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserService;
 import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
+import com.realestate.RealEstate.userrequests.RequestObject;
 import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -100,9 +102,24 @@ public class RegistrationController {
                 appUser.getArea(),
                 license,
                 count,
-                notificationList
+                notificationList,
+                appUser.getNotificationSound()
+
         );
     }
 
+    @PostMapping("/udpateNotificationSound")
+    public void udpateNotificationSound(@RequestBody RequestObject requestObject){
+      appUserService.udpateNotificationSound(requestObject.getUserId());
+    }
 
+    @PostMapping("/editUserInfo")
+    public EditUserInfoResponse editUserInfo(@RequestBody RequestObject requestObject){
+       return appUserService.editUserInfo(requestObject.getUserId(),requestObject.getNewPhone(), requestObject.getNewName(), requestObject.getNewAddress());
+    }
+
+    @PostMapping("/checkOldPassword")
+    public boolean checkOldPassword(@RequestBody RequestObject requestObject){
+        return appUserService.checkOldPassword(requestObject.getUserId(),requestObject.getOldPassword());
+    }
 }
