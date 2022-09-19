@@ -12,14 +12,23 @@ public class SmsController {
 
     private final SmsService smsService;
 
+    private final VeevoSmsService veevoSmsService;
     @Autowired
-    public SmsController(SmsService smsService) {
+    public SmsController(SmsService smsService, VeevoSmsService veevoSmsService) {
         this.smsService = smsService;
+        this.veevoSmsService = veevoSmsService;
     }
 
     @PostMapping
     public void sendSms(@RequestBody SmsRequest smsRequest){
 
         smsService.sendSms(smsRequest);
+    }
+
+    @PostMapping("/veve")
+    public void sendSms2() {
+
+            veevoSmsService.sendMessage("+923229882559");
+
     }
 }

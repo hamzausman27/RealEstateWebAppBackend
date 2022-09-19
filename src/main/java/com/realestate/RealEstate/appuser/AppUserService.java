@@ -2,6 +2,7 @@ package com.realestate.RealEstate.appuser;
 
 import com.realestate.RealEstate.registration.token.ConfirmationToken;
 import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
+import com.realestate.RealEstate.sms.VeevoSmsService;
 import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import com.realestate.RealEstate.sms.SmsRequest;
 import com.realestate.RealEstate.sms.SmsService;
@@ -33,7 +34,7 @@ public class AppUserService implements UserDetailsService {
 
     private final UserSearchOptionService userSearchOptionService;
     private final static Logger logger = LoggerFactory.getLogger(AppUserService.class);
-    private final SmsService smsService;
+    private final VeevoSmsService veevoSmsService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -154,9 +155,12 @@ public class AppUserService implements UserDetailsService {
 
         if(appUserRepository.findByPhoneNumber(phoneNumber).isPresent()){
             passcodeVerificationService.deletePrevPasscode(phoneNumber);
-            smsService.sendSms(prepareSmsRequest(phoneNumber));
+            veevoSmsService.sendMessage(phoneNumber);
+          //  smsService.sendSms(prepareSmsRequest(phoneNumber));
             logger.info("New passcode has been sent!!!");
-        return true;
+//            VeevoSmsService veevoSmsService = new VeevoSmsService();
+//            veevoSmsService.sendMessage(phoneNumber);
+            return true;
         }
         return false;
     }

@@ -15,23 +15,23 @@ import org.springframework.stereotype.Service;
 import static com.realestate.RealEstate.utils.AppConstants.PASS_CODE_MESSAGE;
 
 @AllArgsConstructor
-@Service("twilio")
+@Service("veevo")
 public class TwilioSmsSender implements SmsSender{
 
     private static final Logger logger = LoggerFactory.getLogger(TwilioSmsSender
     .class);
-    private final TwilioConfiguration twilioConfiguration;
     private final PasscodeVerificationService passcodeVerificationService;
+
+    private final VeevoSmsService veevoSmsService;
 
     @Override
     public void sendSms(SmsRequest smsRequest) {
 
         if(isPhoneValid(smsRequest.getPhoneNumber())){
-        PhoneNumber to = new PhoneNumber(smsRequest.getPhoneNumber());
-        PhoneNumber from = new PhoneNumber(twilioConfiguration.getTrialNumber());
-
         String passcode = RandomStringUtils.randomNumeric(6);
         String message = PASS_CODE_MESSAGE+ passcode;
+
+
 
 //        MessageCreator creator = Message.creator(to,from,message);
 //        creator.create();

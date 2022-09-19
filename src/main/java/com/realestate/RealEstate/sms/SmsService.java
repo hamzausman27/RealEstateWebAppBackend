@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 public class SmsService {
 
     private final SmsSender smsSender;
+
   //  private final AppUserService appUserService;
 
     @Autowired
-    public SmsService(@Qualifier("twilio") TwilioSmsSender twilioSmsSender) {
+    public SmsService(TwilioSmsSender twilioSmsSender) {
         this.smsSender = twilioSmsSender;
     }
 
