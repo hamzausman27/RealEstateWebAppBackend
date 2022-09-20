@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @ToString
 public class UserSearchOptionResponse {
     private final int searchOption;
-    private final double maxRange;
+    private final int maxRange;
     private final String ciy;
     private final String country;
     private final String token;

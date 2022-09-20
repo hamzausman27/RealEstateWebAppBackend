@@ -41,7 +41,7 @@ public class AdminUserService {
         return allUsers;
     }
 
-    private String getSearchOptionString(int option,double maxDistance){
+    private String getSearchOptionString(int option,int maxDistance){
         String res= "";
         if(option == 1) {
             res = "Range("+maxDistance+" km)";
