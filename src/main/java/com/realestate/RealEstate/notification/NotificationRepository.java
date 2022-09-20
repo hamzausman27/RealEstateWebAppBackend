@@ -1,6 +1,5 @@
 package com.realestate.RealEstate.notification;
 
-import com.realestate.RealEstate.appuser.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

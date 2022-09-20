@@ -1,9 +1,10 @@
 package com.realestate.RealEstate.userlocation;
 
 import com.realestate.RealEstate.appuser.AppUser;
-import com.sun.istack.NotNull;
-import lombok.*;
-import org.locationtech.jts.geom.Point;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 

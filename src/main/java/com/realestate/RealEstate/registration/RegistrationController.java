@@ -1,15 +1,10 @@
 package com.realestate.RealEstate.registration;
 
-import com.realestate.RealEstate.appuser.EditUserInfoResponse;
-import com.realestate.RealEstate.appuser.LogInResponse;
-import com.realestate.RealEstate.notification.Notification;
+import com.realestate.RealEstate.appuser.*;
 import com.realestate.RealEstate.notification.NotificationService;
 import com.realestate.RealEstate.notification.UserNotificationResponse;
-import com.realestate.RealEstate.userinfo.UserInfo;
-import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.appuser.AppUserService;
-import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
+import com.realestate.RealEstate.userinfo.UserInfo;
 import com.realestate.RealEstate.userrequests.RequestObject;
 import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import lombok.AllArgsConstructor;
@@ -30,14 +25,13 @@ public class RegistrationController {
     private AppUserService appUserService;
     private PasscodeVerificationService passcodeVerificationService;
 
-    private ConfirmationTokenService confirmationTokenService;
 
     private UserSearchOptionService userSearchOptionService;
 
     private NotificationService notificationService;
 
     @PostMapping("/registration")
-    public Boolean register(@RequestBody RegistrationRequest request){
+    public SignUpResponse register(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
     }
 

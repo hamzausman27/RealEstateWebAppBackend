@@ -3,7 +3,6 @@ package com.realestate.RealEstate.userlocation;
 import com.realestate.RealEstate.appuser.AppUser;
 import com.realestate.RealEstate.appuser.AppUserRepository;
 import com.realestate.RealEstate.appuser.AppUserRole;
-import com.realestate.RealEstate.userseachoption.UserSearchOption;
 import com.realestate.RealEstate.userseachoption.UserSearchOptionRepository;
 import lombok.AllArgsConstructor;
 import net.sf.geographiclib.Geodesic;
@@ -108,9 +107,10 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
             UserLocation userLocation = userLocationOptional.get();
             List<UserLocation> userLocationList = userLocationRepository.findAll();
             for(UserLocation userLocation1:userLocationList){
-                if(userLocation1.getAppUser().getId()!=agentId && userLocation1.getAppUser().getAppUserRole()!= AppUserRole.ADMIN){
+                AppUser appUser = userLocation1.getAppUser();
+                if(appUser.getId()!=agentId && appUser.getAppUserRole()!= AppUserRole.ADMIN && appUser.getVerified() && !appUser.getLocked() ){
                     if(checkUserInRange(userLocation,userLocation1,range)){
-                        usersInRange.add(userLocation1.getAppUser().getId());
+                        usersInRange.add(appUser.getId());
                     }
                 }
             }
@@ -160,7 +160,7 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
             // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
             List<AppUser> userSearchOptionList =  appUserRepository.findAll();
             logger.info("total users in db:" , userSearchOptionList.size());
-            Stream<AppUser> filteredUsersInCountry = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) && val.getAppUserRole()!= AppUserRole.ADMIN &&  Objects.equals(val.getCountry(), country));
+            Stream<AppUser> filteredUsersInCountry = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) && val.getAppUserRole()!= AppUserRole.ADMIN && val.getVerified() && !val.getLocked() &&  Objects.equals(val.getCountry(), country));
             // logger.info("total users in db:" , filteredUsersInCountry.collect(Collectors.toList()).size());
             userIdList = filteredUsersInCountry.map(AppUser::getId).collect(Collectors.toList());
             logger.info("Number of users for country:" + country +" , option:" + option + " are : "+ userIdList.size() );
@@ -170,7 +170,7 @@ private boolean checkUserInRange(UserLocation userLocation,UserLocation otherUse
             // UserSearchOption searchOption = userSearchOptionRepository.findByAppUser()
             List<AppUser> userSearchOptionList =  appUserRepository.findAll();
             logger.info("total users in db:" , userSearchOptionList.size());
-            Stream<AppUser> filteredUsersInCity = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) && val.getAppUserRole()!= AppUserRole.ADMIN && Objects.equals(val.getCity(), city));
+            Stream<AppUser> filteredUsersInCity = userSearchOptionList.stream().filter(val -> !Objects.equals(val.getId(), senderId) && val.getAppUserRole()!= AppUserRole.ADMIN && val.getVerified() && !val.getLocked() && Objects.equals(val.getCity(), city));
             userIdList = filteredUsersInCity.map(AppUser::getId).collect(Collectors.toList());
             logger.info("Number of users for city:" + city +" , option:" + option + " are : "+userIdList.size() );
             return userIdList;

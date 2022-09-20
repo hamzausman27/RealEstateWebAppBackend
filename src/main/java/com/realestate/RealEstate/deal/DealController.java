@@ -1,11 +1,8 @@
 package com.realestate.RealEstate.deal;
 
-import com.realestate.RealEstate.contact.ContactRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RestController

@@ -37,11 +37,6 @@ public class UserRequestService {
         requestRepository.save(request);
 
         logger.info("Adding requests in user_requests table for sender:"+senderId +"  and receiver id:"+receiverId +" and request id:"+ request.getId());
-//        Optional<Request> requestOptional = requestRepository.findById(requestId);
-//        if(requestOptional.isEmpty()){
-//            logger.warn("UserRequest add failed!! Request id is not found in db ->receiverId:"+requestId);
-//            return false;
-//        }
         userRequestRepository.save(new UserRequest(
                 senderOptional.get(),receiverOptional.get(),request
         ));

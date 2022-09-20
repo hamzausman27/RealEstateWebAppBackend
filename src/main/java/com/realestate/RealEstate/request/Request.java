@@ -1,7 +1,5 @@
 package com.realestate.RealEstate.request;
 
-import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.deal.Deal;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

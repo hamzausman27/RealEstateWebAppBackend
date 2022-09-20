@@ -1,7 +1,5 @@
 package com.realestate.RealEstate.sms.passcode;
 
-import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.registration.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ public class PasscodeVerificationService {
         passcodeVerificationRepository.save(passcodeVerification);
     }
 
-    @Query("Select a.passcode from passcode_verification a WHERE a.phone_number = ?1")
+    @Query(value = "Select a.passcode from passcode_verification a WHERE a.phone_number = ?1",nativeQuery = true)
     public Optional<PasscodeVerification> getPassCode(String phoneNumber){
         return passcodeVerificationRepository.findByPhoneNumber(phoneNumber);
     }

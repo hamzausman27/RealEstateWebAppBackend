@@ -1,12 +1,10 @@
 package com.realestate.RealEstate.contact;
 
 import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.tag.Tag;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter

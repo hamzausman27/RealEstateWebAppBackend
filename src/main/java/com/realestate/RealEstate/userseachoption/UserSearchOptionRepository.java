@@ -1,7 +1,6 @@
 package com.realestate.RealEstate.userseachoption;
 
 import com.realestate.RealEstate.appuser.AppUser;
-import com.realestate.RealEstate.utils.SearchOption;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,12 +1,11 @@
 package com.realestate.RealEstate.appuser;
 
-import com.realestate.RealEstate.registration.token.ConfirmationToken;
-import com.realestate.RealEstate.registration.token.ConfirmationTokenService;
-import com.realestate.RealEstate.sms.VeevoSmsService;
-import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
 import com.realestate.RealEstate.sms.SmsRequest;
-import com.realestate.RealEstate.sms.SmsService;
+import com.realestate.RealEstate.sms.VeevoSmsService;
 import com.realestate.RealEstate.sms.passcode.PasscodeVerificationService;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionResponse;
+import com.realestate.RealEstate.userseachoption.UserSearchOptionService;
+import com.realestate.RealEstate.utils.AppConstants;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +26,13 @@ public class AppUserService implements UserDetailsService {
     private final static String USER_NOT_FOUND_MESSAGE = "User has not been found with phone number provided!!!";
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
 
     private final PasscodeVerificationService passcodeVerificationService;
 
-    private final UserSearchOptionService userSearchOptionService;
     private final static Logger logger = LoggerFactory.getLogger(AppUserService.class);
     private final VeevoSmsService veevoSmsService;
+
+    private final UserSearchOptionService userSearchOptionService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,43 +40,28 @@ public class AppUserService implements UserDetailsService {
                 .orElseThrow(()-> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MESSAGE,username)));
     }
 
-    public Boolean signUpUser(AppUser appUser) {
+    public SignUpResponse signUpUser(AppUser appUser) {
 
         boolean userExists = checkUserExists(appUser);
 
         if(userExists){
            // throw new IllegalStateException("Registration fails!!!");
-            return false;
+            return new SignUpResponse(false,"This phone number is already registered!");
         }
 
         String encodedPassword = passwordEncoder.encode(appUser.getPassword());
 
         appUser.setPassword(encodedPassword);
 
-        if(appUser.getPhoneNumber().equals("+923229882559")){
+        if(appUser.getPhoneNumber().equals(AppConstants.ADMIN_PHONE_1) || appUser.getPhoneNumber().equals(AppConstants.ADMIN_PHONE_2) ){
             appUser.setAppUserRole(AppUserRole.ADMIN);
             appUser.setLocked(false);
             appUser.setVerified(true);
         }
 
         appUserRepository.save(appUser);
-        //saving  default search option : 3(country) and 50 km as default maxRange
-       // userSearchOptionService.addUserSearchOption(appUser,3,50, appUser.getCity(), appUser.getCountry());
 
-        String token  = UUID.randomUUID().toString();
-
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                appUser
-        );
-
-       // confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-       // smsService.sendSms(prepareSmsRequest(appUser.getPhoneNumber()));
-
-        return true;
+        return new SignUpResponse(true,"User added!");
     }
     public LogInResponse loginUser(String phoneNumber, String rawPassword){
         LogInResponse logInResponse = null;
@@ -92,6 +75,16 @@ public class AppUserService implements UserDetailsService {
         String encodedPassword = appUser.getPassword();
         boolean checkLogin = passwordEncoder.matches(rawPassword, encodedPassword);
         boolean isAdmin = appUser.getAppUserRole().equals(AppUserRole.ADMIN);
+        if(!isAdmin){
+            logger.info("Checking if user package is expired or not!");
+            UserSearchOptionResponse userSearchOption = userSearchOptionService.getUserSearchOption(appUser.getId());
+            if(userSearchOption.getExpiryDate().isBefore(LocalDate.now())){
+                logger.warn("User package is expired!! Locking it!");
+                appUser.setLocked(true);
+                appUserRepository.blockAppUser(appUser.getId());
+            }
+
+        }
         Boolean appUserLocked = appUser.getLocked();
         Boolean appUserVerified = appUser.getVerified();
         logger.info("User Role-> Admin :" + isAdmin);
@@ -131,10 +124,6 @@ public class AppUserService implements UserDetailsService {
 
             return false;
         }
-//        if(appUserRepository.findByEmail(appUser.getEmail()).isPresent()){
-//           logger.warn("Email already exists!!!!");
-//            return true;
-//        }
         if(appUserRepository.findByPhoneNumber(appUser.getPhoneNumber()).isPresent()){
             logger.warn("Phone number already exists!!!!");
             return true;
@@ -156,10 +145,7 @@ public class AppUserService implements UserDetailsService {
         if(appUserRepository.findByPhoneNumber(phoneNumber).isPresent()){
             passcodeVerificationService.deletePrevPasscode(phoneNumber);
             veevoSmsService.sendMessage(phoneNumber);
-          //  smsService.sendSms(prepareSmsRequest(phoneNumber));
             logger.info("New passcode has been sent!!!");
-//            VeevoSmsService veevoSmsService = new VeevoSmsService();
-//            veevoSmsService.sendMessage(phoneNumber);
             return true;
         }
         return false;

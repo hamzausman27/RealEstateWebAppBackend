@@ -1,6 +1,5 @@
 package com.realestate.RealEstate.notification;
 
-import com.realestate.RealEstate.request.Request;
 import com.realestate.RealEstate.userrequests.UserRequestInfoResponse;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

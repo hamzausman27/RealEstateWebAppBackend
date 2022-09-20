@@ -1,4 +1,4 @@
-package com.realestate.RealEstate.tag;
+package com.realestate.RealEstate.appuser;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,8 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class TagRequest {
+public class SignUpResponse {
+    private final boolean userAdded;
+    private final String desc;
 
-    private final Long tagId;
-    private final String tagName;
 }

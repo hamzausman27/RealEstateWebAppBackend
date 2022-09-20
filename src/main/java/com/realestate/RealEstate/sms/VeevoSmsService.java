@@ -6,16 +6,11 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.*;
-import java.io.*;
-import java.util.Map;
 
 import static com.realestate.RealEstate.utils.AppConstants.PASS_CODE_MESSAGE;
 import static com.realestate.RealEstate.utils.AppConstants.VEEVOTECH_HASH_KEY;
@@ -23,8 +18,6 @@ import static com.realestate.RealEstate.utils.AppConstants.VEEVOTECH_HASH_KEY;
 @Service
 @AllArgsConstructor
 public class VeevoSmsService {
-
-    //private static final String hashcode = "f97b6dbbb508939e32f9637a22401387";
     private final PasscodeVerificationService passcodeVerificationService;
 
     public void sendMessage(String phoneNumber) {

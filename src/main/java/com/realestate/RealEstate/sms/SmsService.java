@@ -1,9 +1,6 @@
 package com.realestate.RealEstate.sms;
 
-import com.realestate.RealEstate.appuser.AppUserService;
-import com.realestate.RealEstate.registration.VerificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
