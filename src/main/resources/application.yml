@@ -2,38 +2,22 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-
+  max-http-header-size: 1048576
 spring:
   datasource:
     password: root
-    url: jdbc:mysql://localhost:3306/users?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    url: jdbc:mysql://localhost:3306/burpi_db?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false&allowPublicKeyRetrieval=true
     username: root
     hikari:
-      maximum-pool-size: 10
+      maximum-pool-size: 300
+      minimum-idle: 3
+      idleTimeout: 600000
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       dialect: org.hibernate.dialect.MySQL57Dialect
     show-sql: true
-
-  mail:
-    host: localhost
-    port: 1025
-    username: hello
-    password: hello
-
-    properties:
-      mail:
-        smtp:
-          ssl:
-            trust: "*"
-          auth: true
-          starttls:
-            enable: true
-          connectiontimeout: 50000
-          timeout: 30000
-          writetimeout: 50000
 
 twilio:
   account_sid: AC2b9d19ee98c4d3b6cce1841085a16b65

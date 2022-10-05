@@ -39,7 +39,7 @@ public class UserSearchOptionService {
 
     public boolean updateSearchOptionForUser(long userId,int newOption){
         Optional<AppUser> userOptional = appUserRepository.findById(userId);
-        if(userOptional.isEmpty()){
+        if(!userOptional.isPresent()){
             logger.warn("Unable to updateSearchOptionForUser as user is not present in db!! userId:"+userId);
             return false;
         }
@@ -54,14 +54,14 @@ public class UserSearchOptionService {
     }
     public UserSearchOptionResponse getUserSearchOption(long userId){
         Optional<AppUser> userOptional = appUserRepository.findById(userId);
-        if(userOptional.isEmpty()){
+        if(!userOptional.isPresent()){
             logger.warn("Unable to getUserSearchOption as user is not present in db!! userId:"+userId);
             return null;
         }
         AppUser appUser = userOptional.get();
 
         Optional<UserSearchOption> searchOptional = userSearchOptionRepository.findByAppUser(appUser);
-        if(searchOptional.isEmpty()){
+        if(!searchOptional.isPresent()){
             logger.warn("Unable to getUserSearchOption as user's search option is not present in db!! userId:"+searchOptional.get().toString());
             return null;
         }

@@ -23,6 +23,11 @@ public class ContactController {
         return contactService.deleteContact(contactRequest);
     }
 
+    @PostMapping("/removeMultipleContacts")
+    public void removeMultipleContacts(@RequestBody ContactRequest2 contactRequest){
+        contactService.deleteContactList(contactRequest);
+    }
+
 //    @PostMapping("/updateContact")
 //    public String updateContact(@RequestBody ContactRequest contactRequest){
 //        if(contactService.updateContact(contactRequest)){

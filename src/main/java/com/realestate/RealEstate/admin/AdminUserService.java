@@ -87,7 +87,7 @@ public class AdminUserService {
 
     public boolean approvePendingAccount(Long agentId, int searchOption, int maxRange, LocalDate expirationDate){
         Optional<AppUser> appUserOptional = appUserRepository.findById(agentId);
-        if(appUserOptional.isEmpty()){
+        if(!appUserOptional.isPresent()){
             logger.warn("Invalid user id!! userId:"+agentId);
             return false;
         }
@@ -104,7 +104,7 @@ public class AdminUserService {
 
     public boolean removeUserData(Long id) {
         Optional<AppUser> appUserOptional = appUserRepository.findById(id);
-        if(appUserOptional.isEmpty()){
+        if(!appUserOptional.isPresent()){
             logger.warn("Unable to delete user as it does not exist in db! id:"+id);
             return false;
         }
@@ -116,7 +116,7 @@ public class AdminUserService {
 
     public boolean blockUser(Long id) {
         Optional<AppUser> appUserOptional = appUserRepository.findById(id);
-        if(appUserOptional.isEmpty()){
+        if(!appUserOptional.isPresent()){
             logger.warn("Unable to block user as it does not exist in db! id:"+id);
             return false;
         }
@@ -127,7 +127,7 @@ public class AdminUserService {
 
     public boolean unBlockUser(Long id) {
         Optional<AppUser> appUserOptional = appUserRepository.findById(id);
-        if(appUserOptional.isEmpty()){
+        if(!appUserOptional.isPresent()){
             logger.warn("Unable to unblock user as it does not exist in db! id:"+id);
             return false;
         }

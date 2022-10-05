@@ -67,7 +67,7 @@ public class AppUserService implements UserDetailsService {
         LogInResponse logInResponse = null;
         logger.info("Trying to log in with -> phoneNumber : " + phoneNumber + "  , password : " + rawPassword);
         Optional<AppUser> appUserOptional = appUserRepository.findByPhoneNumber(phoneNumber);
-        if(appUserOptional.isEmpty()){
+        if(!appUserOptional.isPresent()){
             logger.warn("Log In failed!! User with phone number:"+phoneNumber +" does not exit in database!!");
             return new LogInResponse(false,false,false,false);
         }
@@ -75,7 +75,8 @@ public class AppUserService implements UserDetailsService {
         String encodedPassword = appUser.getPassword();
         boolean checkLogin = passwordEncoder.matches(rawPassword, encodedPassword);
         boolean isAdmin = appUser.getAppUserRole().equals(AppUserRole.ADMIN);
-        if(!isAdmin){
+        Boolean appUserVerified = appUser.getVerified();
+        if(!isAdmin && appUserVerified){
             logger.info("Checking if user package is expired or not!");
             UserSearchOptionResponse userSearchOption = userSearchOptionService.getUserSearchOption(appUser.getId());
             if(userSearchOption.getExpiryDate().isBefore(LocalDate.now())){
@@ -86,11 +87,8 @@ public class AppUserService implements UserDetailsService {
 
         }
         Boolean appUserLocked = appUser.getLocked();
-        Boolean appUserVerified = appUser.getVerified();
         logger.info("User Role-> Admin :" + isAdmin);
-        if(isAdmin){
-            addDummyData();
-        }
+
 
         logger.info("User Role-> AccountLocked :" + appUserLocked);
         if(!checkLogin){
@@ -105,18 +103,18 @@ public class AppUserService implements UserDetailsService {
     }
 
 
-    private void addDummyData(){
-        AppUser appUser = new AppUser("Hamza Usman","hamza@gmail.com","+923229882558","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
-
-        AppUser appUser1 = new AppUser("Hamza Rehman","hamza@gmail.com","+923229882557","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
-
-        AppUser appUser2 = new AppUser("Haris Khan","hamza@gmail.com","+923229882556","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
-
-        signUpUser(appUser);
-        signUpUser(appUser1);
-        signUpUser(appUser2);
-
-    }
+//    private void addDummyData(){
+//        AppUser appUser = new AppUser("Hamza Usman","hamza@gmail.com","+923229882558","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+//
+//        AppUser appUser1 = new AppUser("Hamza Rehman","hamza@gmail.com","+923229882557","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+//
+//        AppUser appUser2 = new AppUser("Haris Khan","hamza@gmail.com","+923229882556","sage","PK","PB","Lahore","Johar town","123456789",AppUserRole.USER);
+//
+//        signUpUser(appUser);
+//        signUpUser(appUser1);
+//        signUpUser(appUser2);
+//
+//    }
 
     public boolean checkUserExists(AppUser appUser){
 

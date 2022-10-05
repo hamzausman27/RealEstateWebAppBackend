@@ -24,12 +24,12 @@ public class UserRequestService {
 
     public boolean addUserRequest(Long senderId, Long receiverId, Request request){
         Optional<AppUser> senderOptional = appUserRepository.findById(senderId);
-        if(senderOptional.isEmpty()){
+        if(!senderOptional.isPresent()){
             logger.warn("UserRequest add failed!!1Sender id is not found in db ->senderId:"+senderId);
             return false;
         }
         Optional<AppUser> receiverOptional = appUserRepository.findById(receiverId);
-        if(receiverOptional.isEmpty()){
+        if(!receiverOptional.isPresent()){
             logger.warn("UserRequest add failed!! Receiver id is not found in db ->receiverId:"+receiverId);
             return false;
         }

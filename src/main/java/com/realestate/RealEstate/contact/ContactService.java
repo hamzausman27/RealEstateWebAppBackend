@@ -26,7 +26,7 @@ public class ContactService {
         if(null != contactRequest) {
             Optional<AppUser> appUserOptional = appUserRepository.findById(Long.valueOf(contactRequest.getAgentId()));
 
-            if(appUserOptional.isEmpty()){
+            if(!appUserOptional.isPresent()){
                 logger.error("Unable to save new contact as the provided agent id does not exists in the database!! -> " + contactRequest.getAgentId());
                 return false;
             } else {
@@ -84,4 +84,16 @@ public class ContactService {
         return null;
     }
 
+    public void deleteContactList(ContactRequest2 contactRequest) {
+
+        for (Long contactId:contactRequest.getContactList()){
+            Optional<Contact> userContactOptional = contactRepository.findById(contactId);
+            if(userContactOptional.isPresent()){
+                Contact contact = userContactOptional.get();
+                logger.info("Going to delete contact -> contact:"+contact.toString());
+                contactRepository.delete(contact);
+                logger.info("Contact deleted!");
+            }
+        }
+    }
 }

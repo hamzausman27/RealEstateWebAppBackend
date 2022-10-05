@@ -55,6 +55,12 @@ public class RegistrationController {
         return appUserService.loginUser(loginRequest.getPhone(),loginRequest.getPassword());
 
     }
+    @GetMapping("/checkLive")
+    public boolean checkLive(){
+
+        return true;
+
+    }
 
     @PostMapping("/resendPasscode")
     public Boolean resendPassCode(@RequestBody VerificationRequest resendPassCodeRequest){
