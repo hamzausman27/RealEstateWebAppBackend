@@ -71,15 +71,21 @@ public class UserRequestService {
         logger.info("Total sent request count for receiver:"+ receivedId + " is :" + receivedRequestsIds.size());
         for(Long requestId: receivedRequestsIds) {
             Optional<Request> requestOptional = requestRepository.findById(requestId);
+            logger.info("User reqest is fetched !");
             if(requestOptional.isPresent()) {
                 Request request = requestOptional.get();
-
+                logger.info("User request exists !");
                 Long senderId = userRequestRepository.fetchSenderId(request.getId());
+                logger.info("senderId !");
                 Optional<AppUser> senderOptional = appUserRepository.findById(senderId);
+                logger.info("senderOptionals!");
 
                 long userRequestId = userRequestRepository.fetchReceivedRequestId(receivedId,requestId);
+                logger.info("userRequestId!");
                 Optional<UserRequest> userRequestOptional = userRequestRepository.findById(userRequestId);
                 //userRequestOptional.get().
+
+                logger.info("userRequestOptional!");
 
                 if (senderOptional.isPresent()) {
                     AppUser sender = senderOptional.get();

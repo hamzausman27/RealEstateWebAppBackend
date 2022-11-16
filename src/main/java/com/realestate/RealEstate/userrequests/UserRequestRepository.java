@@ -24,7 +24,7 @@ public interface UserRequestRepository extends JpaRepository<UserRequest,Long> {
     @Query(value = "SELECT DISTINCT(request_id)  from user_request u where u.receiver_user_id= ?1 order by request_id desc ", nativeQuery = true)
     List<Long> fetchReceivedRequestIds(Long receiverId);
 
-    @Query(value = "SELECT sender_user_id  from user_request u where u.request_id= ?1 ", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT(sender_user_id)  from user_request u where u.request_id= ?1 ", nativeQuery = true)
     long fetchSenderId(Long requestId);
 
 //  @Query(value = "SELECT id  from user_request u where u.request_id= ?1 ", nativeQuery = true)

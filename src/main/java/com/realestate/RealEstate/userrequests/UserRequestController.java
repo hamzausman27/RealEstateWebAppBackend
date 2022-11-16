@@ -38,6 +38,7 @@ public class UserRequestController {
         LocalDateTime createdAt = LocalDateTime.now();
         AppUser senderUser = appUserRepository.findById(sendRequest.getAgentId()).get();
         Request request = new Request(sendRequest.getTitle(), sendRequest.getPropertySize(),sendRequest.getTagsAdded(),sendRequest.getPropertyAmount(),sendRequest.getLocation(),sendRequest.getDescription(),createdAt);
+
         for(long receiverId:sendRequest.getReceiverIdList()){
             userRequestService.addUserRequest(sendRequest.getAgentId(),receiverId,request);
             String notificationDesc = "You have received a request from "+senderUser.getFullName()+".";
